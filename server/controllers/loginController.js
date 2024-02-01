@@ -45,8 +45,21 @@ export const login_user_post = [
     const refreshToken = createRefreshToken(email);
     const accessToken = createAccessToken(email);
 
-    const session = new Session({ user: foundUser.email });
-    await session.save();
+    let expiry = new Date();
+    expiry.setDate(expiry.getDate() + 1);
+
+    const existingSession = await Session.findOneAndUpdate(
+      {
+        user: foundUser.email,
+      },
+      {
+        user: foundUser.email,
+        expiry,
+      },
+      {
+        upsert: true,
+      }
+    ).exec();
 
     const cookieOptions = {
       sameSite: 'none',

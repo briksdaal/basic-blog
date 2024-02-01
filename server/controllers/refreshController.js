@@ -13,7 +13,7 @@ export const refresh_get = asyncHandler(async function (req, res) {
     user: payload.sub,
   }).exec();
 
-  if (activeSession) {
+  if (activeSession && Date.now() < activeSession.expiry) {
     const accessToken = createAccessToken(payload.sub);
     return res.json({
       success: true,

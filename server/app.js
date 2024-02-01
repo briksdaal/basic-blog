@@ -17,6 +17,7 @@ import protectedRouter from './routes/protected.js';
 import registerRouter from './routes/register.js';
 import loginRouter from './routes/login.js';
 import refreshRouter from './routes/refresh.js';
+import logoutRouter from './routes/logout.js';
 
 const app = express();
 
@@ -34,6 +35,7 @@ app.use('/protected', protectedRouter);
 app.use('/register', registerRouter);
 app.use('/login', loginRouter);
 app.use('/refresh', refreshRouter);
+app.use('/logout', logoutRouter);
 
 // catch 404 and forward error
 app.use((req, res, next) => {
