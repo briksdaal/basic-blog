@@ -8,9 +8,10 @@ const options = {
   algorithms: ['RS256'],
 };
 
-const strategy = new Strategy(options, (payload, done) => {
+const strategy = new Strategy(options, async (payload, done) => {
   try {
-    const foundUser = User.findOne({ email: payload.sub });
+    const foundUser = await User.findOne({ email: payload.sub }).exec();
+
     if (!foundUser) {
       done(null, false, 'No user found');
     } else {
