@@ -4,6 +4,9 @@ import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import { fileURLToPath } from 'url';
 
+// mongoose configuration
+import './config/mongoose.js';
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 import indexRouter from './routes/index.js';
