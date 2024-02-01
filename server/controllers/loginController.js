@@ -45,10 +45,11 @@ export const login_user_post = [
     const refreshToken = createRefreshToken(email);
     const accessToken = createAccessToken(email);
 
-    const session = new Session({ user: foundUser._id });
+    const session = new Session({ user: foundUser.email });
     await session.save();
 
     res.cookie('refresh', refreshToken);
+
     res.json({
       success: true,
       message: `User ${email} logged in`,

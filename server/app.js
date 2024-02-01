@@ -5,6 +5,7 @@ import logger from 'morgan';
 import { fileURLToPath } from 'url';
 import passport from 'passport';
 import strategy from './config/passport.js';
+import createError from 'http-errors';
 
 // mongoose configuration
 import './config/mongoose.js';
@@ -15,6 +16,7 @@ import indexRouter from './routes/index.js';
 import protectedRouter from './routes/protected.js';
 import registerRouter from './routes/register.js';
 import loginRouter from './routes/login.js';
+import refreshRouter from './routes/refresh.js';
 
 const app = express();
 
@@ -31,5 +33,24 @@ app.use('/', indexRouter);
 app.use('/protected', protectedRouter);
 app.use('/register', registerRouter);
 app.use('/login', loginRouter);
+app.use('/refresh', refreshRouter);
+
+// catch 404 and forward error
+app.use((req, res, next) => {
+  next(createError(404));
+});
+
+// error handler
+app.use((err, req, res, next) => {
+  // set locals, only providing error in development
+  const jsonErrorResponse = { message: err.message };
+  if (req.app.get('env') === 'development') {
+    jsonErrorResponse.error = err;
+  }
+
+  // render the error page
+  res.status(err.status || 500);
+  res.json({ error: jsonErrorResponse });
+});
 
 export default app;

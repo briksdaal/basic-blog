@@ -14,3 +14,7 @@ export function createRefreshToken(username) {
 export function createAccessToken(username) {
   return createToken(username, process.env.ACCESS_PRIVATE_KEY, '5m');
 }
+
+export function verifyRefreshToken(token) {
+  return jwt.verify(token, process.env.REFRESH_PUBLIC_KEY);
+}
