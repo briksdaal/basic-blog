@@ -22,10 +22,13 @@ export const refresh_get = asyncHandler(async function (req, res) {
     });
   }
 
-  res.cookie('refresh', refreshToken, {
+  const cookieOptions = {
+    sameSite: 'none',
     maxAge: 1000 * 60 * 60 * 24, // 1d
     httpOnly: true,
-    sameSite: 'none',
     secure: true,
-  });
+  };
+
+  res.clearCookie('refresh', cookieOptions);
+  res.sendStatus(401);
 });

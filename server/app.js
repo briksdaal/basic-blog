@@ -42,15 +42,8 @@ app.use((req, res, next) => {
 
 // error handler
 app.use((err, req, res, next) => {
-  // set locals, only providing error in development
-  const jsonErrorResponse = { message: err.message };
-  if (req.app.get('env') === 'development') {
-    jsonErrorResponse.error = err;
-  }
-
-  // render the error page
   res.status(err.status || 500);
-  res.json({ error: jsonErrorResponse });
+  res.json({ error: { message: err.message } });
 });
 
 export default app;

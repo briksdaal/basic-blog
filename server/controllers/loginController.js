@@ -48,7 +48,14 @@ export const login_user_post = [
     const session = new Session({ user: foundUser.email });
     await session.save();
 
-    res.cookie('refresh', refreshToken);
+    const cookieOptions = {
+      sameSite: 'none',
+      maxAge: 1000 * 60 * 60 * 24, // 1d
+      httpOnly: true,
+      secure: true,
+    };
+
+    res.cookie('refresh', refreshToken, cookieOptions);
 
     res.json({
       success: true,
