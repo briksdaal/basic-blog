@@ -15,9 +15,9 @@ async function main() {
   dbDebugger('DB connected');
 }
 
-main().catch((err) => debug(err));
+main().catch((err) => dbDebugger(err));
 
 const db = mongoose.connection;
-db.on('error', debug('Mongo connection error'));
+db.on('error', () => dbDebugger('Mongo connection error'));
 
 export default db;
