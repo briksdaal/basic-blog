@@ -13,6 +13,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 import indexRouter from './routes/index.js';
 import protectedRouter from './routes/protected.js';
+import registerRouter from './routes/register.js';
 
 const app = express();
 
@@ -27,5 +28,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/protected', protectedRouter);
+app.use('/register', registerRouter);
 
 export default app;
