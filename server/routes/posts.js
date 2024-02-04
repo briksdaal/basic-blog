@@ -20,7 +20,7 @@ router.get('/:id', post_detail);
 /* PUT request to update specific post */
 router.put('/:id', post_update);
 
-/* POST request to delete specific post */
+/* DELETE request to delete specific post */
 router.delete('/:id', post_delete);
 
 export default router;
