@@ -3,7 +3,11 @@ import { body, validationResult } from 'express-validator';
 import bcrypt from 'bcrypt';
 import User from '../models/user.js';
 import Session from '../models/session.js';
-import { createRefreshToken, createAccessToken } from '../utils/jwt.js';
+import {
+  createRefreshToken,
+  createAccessToken,
+  verifyRefreshToken,
+} from '../utils/jwt.js';
 
 export const login_user_post = [
   body('email', 'Email format incorrect').trim().isEmail().escape(),
@@ -77,3 +81,21 @@ export const login_user_post = [
     });
   }),
 ];
+
+export const logout_user_delete = asyncHandler(async function (req, res) {
+  const refreshToken = req.cookies.refresh;
+
+  const payload = verifyRefreshToken(refreshToken);
+
+  await Session.findOneAndDelete({ user: payload.sub });
+
+  const cookieOptions = {
+    sameSite: 'none',
+    maxAge: 1000 * 60 * 60 * 24, // 1d
+    httpOnly: true,
+    secure: true,
+  };
+
+  res.clearCookie('refresh', cookieOptions);
+  res.sendStatus(204);
+});

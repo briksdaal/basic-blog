@@ -1,10 +1,8 @@
 import asyncHandler from 'express-async-handler';
-import jwt from 'jsonwebtoken';
-import User from '../models/user.js';
 import Session from '../models/session.js';
 import { createAccessToken, verifyRefreshToken } from '../utils/jwt.js';
 
-export const refresh_get = asyncHandler(async function (req, res) {
+export const refresh_token_post = asyncHandler(async function (req, res) {
   const refreshToken = req.cookies.refresh;
 
   const payload = verifyRefreshToken(refreshToken);

@@ -14,10 +14,9 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 import indexRouter from './routes/index.js';
 import protectedRouter from './routes/protected.js';
-import registerRouter from './routes/register.js';
-import loginRouter from './routes/login.js';
-import refreshRouter from './routes/refresh.js';
-import logoutRouter from './routes/logout.js';
+import usersRouter from './routes/users.js';
+import authRouter from './routes/auth.js';
+import tokensRouter from './routes/tokens.js';
 
 const app = express();
 
@@ -32,10 +31,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/protected', protectedRouter);
-app.use('/register', registerRouter);
-app.use('/login', loginRouter);
-app.use('/refresh', refreshRouter);
-app.use('/logout', logoutRouter);
+app.use('/users', usersRouter);
+app.use('/auth', authRouter);
+app.use('/tokens', tokensRouter);
 
 // catch 404 and forward error
 app.use((req, res, next) => {
