@@ -174,7 +174,21 @@ export const post_update = [
 
 /* Delete specific post on DELETE */
 export const post_delete = asyncHandler(async function (req, res) {
+  let post;
+  try {
+    post = await Post.findByIdAndDelete(req.params.id).exec();
+  } catch (err) {
+    post = null;
+  }
+
+  if (!post) {
+    return res.status(404).json({
+      error: 'Post not found',
+    });
+  }
+
   res.json({
-    msg: `Delete of post ${req.params.id}`,
+    success: true,
+    post,
   });
 });
