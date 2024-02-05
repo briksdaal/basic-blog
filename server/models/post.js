@@ -2,6 +2,8 @@ import mongoose, { mongo } from 'mongoose';
 
 const Schema = mongoose.Schema;
 
+mongoose.Schema.Types.String.checkRequired((v) => v != null);
+
 const PostSchema = new Schema({
   author: { type: Schema.Types.ObjectId, required: true, ref: 'User' },
   title: { type: String, required: true },

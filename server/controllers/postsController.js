@@ -34,10 +34,7 @@ export const post_create = [
     .trim()
     .isLength({ min: 1 })
     .escape(),
-  body('content', 'Content must contain at least 1 charcters')
-    .trim()
-    .isLength({ min: 1 })
-    .escape(),
+  body('content').trim().escape(),
   body('createdAt', 'Created At date format is invalid')
     .optional({ values: 'falsy' })
     .isISO8601()
@@ -49,7 +46,7 @@ export const post_create = [
     .custom((val, { req }) => {
       // check that editedAt is after createdAt (or after today if no createdAt)
       return (
-        (!req.body.createdAt && Date.parse(val) > Date.now()) ||
+        (!req.body.createdAt && Date.parse(val) >= Date.now()) ||
         Date.parse(val) > Date.parse(req.body.createdAt)
       );
     })
@@ -107,6 +104,7 @@ export const post_detail = asyncHandler(async function (req, res) {
 /* Update specific post on PUT */
 export const post_update = [
   body('author')
+    .optional()
     .trim()
     .isLength({ min: 1 })
     .withMessage('Author must contain at least 1 charcters')
@@ -119,20 +117,31 @@ export const post_update = [
     .withMessage('Author is not recognized')
     .escape(),
   body('title', 'Title must contain at least 1 charcters')
+    .optional()
     .trim()
     .isLength({ min: 1 })
     .escape(),
-  body('content', 'Content must contain at least 1 charcters')
-    .trim()
-    .isLength({ min: 1 })
-    .escape(),
-  body('createdAt', 'Created At date format is invalid').isISO8601().toDate(),
+  body('content').optional().trim().escape(),
+  body('createdAt', 'Created At date format is invalid')
+    .optional()
+    .isISO8601()
+    .toDate(),
   body('editedAt')
+    .optional()
     .isISO8601()
     .withMessage('Edited At date format is invalid')
-    .custom((val, { req }) => {
+    .custom(async (val, { req }) => {
       // check that editedAt is after createdAt
-      return Date.parse(val) > Date.parse(req.body.createdAt);
+      if (req.body.createdAt) {
+        if (Date.parse(val) < Date.parse(req.body.createdAt)) {
+          throw new Error();
+        }
+      } else {
+        const post = await Post.findById(req.params.id);
+        if (Date.parse(val) < Date.parse(post.createdAt)) {
+          throw new Error();
+        }
+      }
     })
     .withMessage("Edited At can't be before Created At")
     .toDate(),
@@ -157,11 +166,9 @@ export const post_update = [
       });
     }
 
-    post.author = req.body.author;
-    post.title = req.body.title;
-    post.content = req.body.content;
-    post.createdAt = req.body.createdAt;
-    post.editedAt = req.body.editedAt;
+    Object.keys(req.body).forEach((e) => {
+      post[e] = req.body[e];
+    });
 
     await post.save();
 
