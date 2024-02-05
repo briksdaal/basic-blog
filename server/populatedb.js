@@ -163,6 +163,7 @@ async function createPosts() {
 
 async function commentCreate(comment) {
   const newComment = new Comment({
+    post: comment.post,
     author: comment.author,
     content: comment.content,
     createdAt: comment.createdAt,
@@ -177,72 +178,84 @@ async function createComments() {
   populateDebugger('Adding Comments');
   const mockComments = [
     {
+      post: posts[0],
       author: 'Alice Johnson',
       content: 'Great post!',
       createdAt: '2024-02-04T10:15:00.000Z',
       editedAt: '2024-02-04T10:30:00.000Z',
     },
     {
+      post: posts[1],
       author: 'Bob Smith',
       content: 'Interesting insights.',
       createdAt: '2024-02-04T11:20:00.000Z',
       editedAt: '2024-02-04T11:45:00.000Z',
     },
     {
+      post: posts[4],
       author: 'Charlie Brown',
       content: 'Thanks for sharing!',
       createdAt: '2024-02-04T12:30:00.000Z',
       editedAt: '2024-02-04T12:45:00.000Z',
     },
     {
+      post: posts[3],
       author: 'David Lee',
       content: 'I enjoyed reading this.',
       createdAt: '2024-02-04T13:40:00.000Z',
       editedAt: '2024-02-04T13:55:00.000Z',
     },
     {
+      post: posts[3],
       author: 'Emma Clark',
       content: 'Great job!',
       createdAt: '2024-02-04T14:10:00.000Z',
       editedAt: '2024-02-04T14:25:00.000Z',
     },
     {
+      post: posts[4],
       author: 'Fiona Davis',
       content: 'Keep up the good work!',
       createdAt: '2024-02-04T15:20:00.000Z',
       editedAt: '2024-02-04T15:35:00.000Z',
     },
     {
+      post: posts[0],
       author: 'George Wilson',
       content: 'I agree with your points.',
       createdAt: '2024-02-04T16:40:00.000Z',
       editedAt: '2024-02-04T16:55:00.000Z',
     },
     {
+      post: posts[1],
       author: 'Hannah Martinez',
       content: 'Fascinating!',
       createdAt: '2024-02-04T17:50:00.000Z',
       editedAt: '2024-02-04T18:05:00.000Z',
     },
     {
+      post: posts[1],
       author: 'Ian Taylor',
       content: 'Well written!',
       createdAt: '2024-02-04T19:00:00.000Z',
       editedAt: '2024-02-04T19:15:00.000Z',
     },
     {
+      post: posts[2],
       author: 'Jasmine White',
       content: 'I learned something new.',
       createdAt: '2024-02-04T20:10:00.000Z',
       editedAt: '2024-02-04T20:25:00.000Z',
     },
     {
+      post: posts[0],
       author: 'Kevin Harris',
       content: 'Thanks for the insights!',
       createdAt: '2024-02-04T21:30:00.000Z',
       editedAt: '2024-02-04T21:45:00.000Z',
     },
     {
+      post: posts[3],
       author: 'Lily Turner',
       content: 'Looking forward to more!',
       createdAt: '2024-02-04T22:40:00.000Z',
