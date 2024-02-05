@@ -92,8 +92,22 @@ export const comment_create = [
 
 /* Return specific comment on GET */
 export const comment_detail = asyncHandler(async function (req, res) {
+  let post;
+  try {
+    post = await Comment.findById(req.params.id).exec();
+  } catch (err) {
+    post = null;
+  }
+
+  if (!post) {
+    return res.status(404).json({
+      error: 'Comment not found',
+    });
+  }
+
   res.json({
-    msg: `Show comment ${req.params.id}`,
+    success: true,
+    post,
   });
 });
 
@@ -106,7 +120,21 @@ export const comment_update = asyncHandler(async function (req, res) {
 
 /* Delete specific comment on DELETE */
 export const comment_delete = asyncHandler(async function (req, res) {
+  let comment;
+  try {
+    comment = await Comment.findByIdAndDelete(req.params.id).exec();
+  } catch (err) {
+    comment = null;
+  }
+
+  if (!comment) {
+    return res.status(404).json({
+      error: 'Comment not found',
+    });
+  }
+
   res.json({
-    msg: `Delete comment ${req.params.id}`,
+    success: true,
+    comment,
   });
 });
