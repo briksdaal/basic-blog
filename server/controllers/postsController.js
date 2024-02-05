@@ -23,8 +23,8 @@ export const post_create = [
     .isLength({ min: 1 })
     .withMessage('Author must contain at least 1 charcters')
     .custom(async (val) => {
-      const findAuthor = await User.findById(val).exec();
-      if (!findAuthor) {
+      const foundAuthor = await User.findById(val).exec();
+      if (!foundAuthor) {
         throw Error();
       }
     })
@@ -47,7 +47,7 @@ export const post_create = [
       // check that editedAt is after createdAt (or after today if no createdAt)
       return (
         (!req.body.createdAt && Date.parse(val) >= Date.now()) ||
-        Date.parse(val) > Date.parse(req.body.createdAt)
+        Date.parse(val) >= Date.parse(req.body.createdAt)
       );
     })
     .withMessage("Edited At can't be before Created At")
@@ -109,8 +109,8 @@ export const post_update = [
     .isLength({ min: 1 })
     .withMessage('Author must contain at least 1 charcters')
     .custom(async (val) => {
-      const findAuthor = await User.findById(val).exec();
-      if (!findAuthor) {
+      const foundAuthor = await User.findById(val).exec();
+      if (!foundAuthor) {
         throw Error();
       }
     })
