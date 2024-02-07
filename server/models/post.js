@@ -10,6 +10,7 @@ const PostSchema = new Schema({
   content: { type: String, required: true },
   createdAt: { type: Date, required: true, default: Date.now },
   editedAt: { type: Date, required: true, default: Date.now },
+  published: { type: Boolean, required: true, default: true },
 });
 
 const PostModel = mongoose.model('Post', PostSchema);
