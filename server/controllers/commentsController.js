@@ -231,6 +231,15 @@ export const comment_update = [
       comment[e] = req.body[e];
     });
 
+    // update editedAt if it isn't in req body
+    if (!req.body.editedAt) {
+      if (Date.parse(comment.createdAt) >= Date.now()) {
+        comment.editedAt = comment.createdAt;
+      } else {
+        comment.editedAt = Date.now();
+      }
+    }
+
     await comment.save();
 
     res.json({

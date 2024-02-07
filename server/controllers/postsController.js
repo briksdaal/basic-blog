@@ -200,6 +200,15 @@ export const post_update = [
       post[e] = req.body[e];
     });
 
+    // update editedAt if it isn't in req body
+    if (!req.body.editedAt) {
+      if (Date.parse(post.createdAt) >= Date.now()) {
+        post.editedAt = post.createdAt;
+      } else {
+        post.editedAt = Date.now();
+      }
+    }
+
     await post.save();
 
     res.json({
