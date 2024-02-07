@@ -63,6 +63,10 @@ export const post_create = [
     })
     .withMessage("Edited At can't be before Created At")
     .toDate(),
+  body('published', 'Published must be true or false')
+    .optional()
+    .isBoolean()
+    .toBoolean(),
   asyncHandler(async function (req, res) {
     const errors = validationResult(req);
 
@@ -78,6 +82,7 @@ export const post_create = [
       content: req.body.content,
       createdAt: req.body.createdAt,
       editedAt: req.body.editedAt,
+      published: req.body.published,
     });
 
     await post.save();
@@ -166,6 +171,10 @@ export const post_update = [
     })
     .withMessage("Edited At can't be before Created At")
     .toDate(),
+  body('published', 'Published must be true or false')
+    .optional()
+    .isBoolean()
+    .toBoolean(),
   asyncHandler(async function (req, res) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
