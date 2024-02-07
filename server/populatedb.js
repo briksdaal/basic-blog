@@ -98,6 +98,7 @@ async function postCreate(post, idx) {
     content: post.content,
     createdAt: post.createdAt,
     editedAt: post.editedAt,
+    published: post.published,
   });
 
   await newPost.save();
@@ -123,6 +124,7 @@ async function createPosts() {
         "The universe is vast and full of wonders waiting to be discovered. From distant galaxies to the mysteries of dark matter, there's always something new to learn.",
       createdAt: '2024-02-15T08:45:00.000Z',
       editedAt: '2024-02-15T10:20:00.000Z',
+      published: false,
     },
     {
       author: users[2],
@@ -139,6 +141,7 @@ async function createPosts() {
         "Cooking is more than just a necessity; it's a form of self-expression and a way to bring people together. Whether you're baking a cake or grilling burgers, there's joy to be found in the kitchen.",
       createdAt: '2023-06-10T05:30:00.000Z',
       editedAt: '2023-06-10T07:15:00.000Z',
+      published: false,
     },
     {
       author: users[2],

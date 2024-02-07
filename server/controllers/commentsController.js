@@ -2,30 +2,57 @@ import asyncHandler from 'express-async-handler';
 import { body, validationResult } from 'express-validator';
 import Comment from '../models/comment.js';
 import Post from '../models/post.js';
+import passport from 'passport';
 
 /* Return list of all comments on GET */
-export const comment_list = asyncHandler(async function (req, res) {
-  const filter = {};
-  if (req.query.post) {
-    filter.post = req.query.post;
-  }
+export const comment_list = [
+  passport.authenticate(['jwt', 'anonymous'], { session: false }),
+  asyncHandler(async function (req, res) {
+    if (!req.query.post && !req.user) {
+      res.status(403).json({
+        error: 'All comments forbidden',
+      });
+    }
 
-  let allComments;
+    const filter = {};
 
-  try {
-    allComments = await Comment.find(filter).sort({ createdAt: -1 }).exec();
-  } catch (err) {
-    allComments = [];
-  }
+    if (req.query.post) {
+      let post;
+      try {
+        post = await Post.findById(req.query.post).exec();
+      } catch (err) {
+        post = null;
+      }
 
-  res.json({
-    success: true,
-    comments: allComments,
-  });
-});
+      if (!post) {
+        return res.status(404).json({
+          error: 'Post not found',
+        });
+      }
+
+      if (!post.published && !req.user) {
+        return res.status(403).json({
+          error: 'Post forbidden',
+        });
+      }
+
+      filter.post = req.query.post;
+    }
+
+    const allComments = await Comment.find(filter)
+      .sort({ createdAt: -1 })
+      .exec();
+
+    res.json({
+      success: true,
+      comments: allComments,
+    });
+  }),
+];
 
 /* Handle create new comment on POST */
 export const comment_create = [
+  passport.authenticate(['jwt', 'anonymous'], { session: false }),
   body('post')
     .trim()
     .isLength({ min: 1 })
@@ -73,6 +100,14 @@ export const comment_create = [
       });
     }
 
+    const post = await Post.findById(req.body.post);
+
+    if (!post.published && !req.user) {
+      return res.status(403).json({
+        error: 'Comment to post is forbidden',
+      });
+    }
+
     const comment = new Comment({
       post: req.body.post,
       author: req.body.author,
@@ -91,28 +126,40 @@ export const comment_create = [
 ];
 
 /* Return specific comment on GET */
-export const comment_detail = asyncHandler(async function (req, res) {
-  let post;
-  try {
-    post = await Comment.findById(req.params.id).exec();
-  } catch (err) {
-    post = null;
-  }
+export const comment_detail = [
+  passport.authenticate(['jwt', 'anonymous'], { session: false }),
+  asyncHandler(async function (req, res) {
+    let comment;
+    try {
+      comment = await Comment.findById(req.params.id)
+        .populate('post', { published: 1 })
+        .exec();
+    } catch (err) {
+      comment = null;
+    }
 
-  if (!post) {
-    return res.status(404).json({
-      error: 'Comment not found',
+    if (!comment) {
+      return res.status(404).json({
+        error: 'Comment not found',
+      });
+    }
+
+    if (!comment.post.published && !req.user) {
+      return res.status(403).json({
+        error: 'Comment forbidden',
+      });
+    }
+
+    res.json({
+      success: true,
+      comment,
     });
-  }
-
-  res.json({
-    success: true,
-    post,
-  });
-});
+  }),
+];
 
 /* Update specific comment on PUT */
 export const comment_update = [
+  passport.authenticate('jwt', { session: false }),
   body('post')
     .optional()
     .trim()
@@ -151,7 +198,7 @@ export const comment_update = [
           throw new Error();
         }
       } else {
-        const comment = await Comment.findById(req.params.id);
+        const comment = await Comment.findById(req.params.id).exec();
         if (Date.parse(val) < Date.parse(comment.createdAt)) {
           throw new Error();
         }
@@ -194,22 +241,25 @@ export const comment_update = [
 ];
 
 /* Delete specific comment on DELETE */
-export const comment_delete = asyncHandler(async function (req, res) {
-  let comment;
-  try {
-    comment = await Comment.findByIdAndDelete(req.params.id).exec();
-  } catch (err) {
-    comment = null;
-  }
+export const comment_delete = [
+  passport.authenticate('jwt', { session: false }),
+  asyncHandler(async function (req, res) {
+    let comment;
+    try {
+      comment = await Comment.findByIdAndDelete(req.params.id).exec();
+    } catch (err) {
+      comment = null;
+    }
 
-  if (!comment) {
-    return res.status(404).json({
-      error: 'Comment not found',
+    if (!comment) {
+      return res.status(404).json({
+        error: 'Comment not found',
+      });
+    }
+
+    res.json({
+      success: true,
+      comment,
     });
-  }
-
-  res.json({
-    success: true,
-    comment,
-  });
-});
+  }),
+];

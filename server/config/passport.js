@@ -1,4 +1,5 @@
-import { Strategy, ExtractJwt } from 'passport-jwt';
+import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
+import { Strategy as AnonymousStrategy } from 'passport-anonymous';
 import User from '../models/user.js';
 import 'dotenv/config';
 
@@ -8,7 +9,7 @@ const options = {
   algorithms: ['RS256'],
 };
 
-const strategy = new Strategy(options, async (payload, done) => {
+export const jwtStrategy = new JwtStrategy(options, async (payload, done) => {
   try {
     const foundUser = await User.findOne({ email: payload.sub }).exec();
 
@@ -22,4 +23,4 @@ const strategy = new Strategy(options, async (payload, done) => {
   }
 });
 
-export default strategy;
+export const anonymousStrategy = new AnonymousStrategy();

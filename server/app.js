@@ -4,7 +4,7 @@ import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import { fileURLToPath } from 'url';
 import passport from 'passport';
-import strategy from './config/passport.js';
+import { jwtStrategy, anonymousStrategy } from './config/passport.js';
 import createError from 'http-errors';
 
 // mongoose configuration
@@ -22,7 +22,9 @@ import commentsRouter from './routes/comments.js';
 
 const app = express();
 
-passport.use(strategy);
+passport.use(jwtStrategy);
+passport.use(anonymousStrategy);
+
 app.use(passport.initialize());
 
 app.use(logger('dev'));

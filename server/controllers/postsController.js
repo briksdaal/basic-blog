@@ -2,22 +2,33 @@ import asyncHandler from 'express-async-handler';
 import { body, validationResult } from 'express-validator';
 import Post from '../models/post.js';
 import User from '../models/user.js';
+import passport from 'passport';
 
 /* Return list of all posts on GET */
-export const post_list = asyncHandler(async function (req, res) {
-  const allPosts = await Post.find()
-    .populate('author', { handle: 1 })
-    .sort({ createdAt: -1 })
-    .exec();
+export const post_list = [
+  passport.authenticate(['jwt', 'anonymous'], { session: false }),
+  asyncHandler(async function (req, res, next) {
+    // show only published posts to regular visitors
+    const filter = { published: true };
+    if (req.user) {
+      delete filter.published;
+    }
 
-  res.json({
-    success: true,
-    posts: allPosts,
-  });
-});
+    const allPosts = await Post.find(filter)
+      .populate('author', { handle: 1 })
+      .sort({ createdAt: -1 })
+      .exec();
+
+    res.json({
+      success: true,
+      posts: allPosts,
+    });
+  }),
+];
 
 /* Handle create new post on POST */
 export const post_create = [
+  passport.authenticate('jwt', { session: false }),
   body('author')
     .trim()
     .isLength({ min: 1 })
@@ -79,30 +90,40 @@ export const post_create = [
 ];
 
 /* Return specific post on GET */
-export const post_detail = asyncHandler(async function (req, res) {
-  let post;
-  try {
-    post = await Post.findById(req.params.id)
-      .populate('author', { handle: 1 })
-      .exec();
-  } catch (err) {
-    post = null;
-  }
+export const post_detail = [
+  passport.authenticate(['jwt', 'anonymous'], { session: false }),
+  asyncHandler(async function (req, res) {
+    let post;
+    try {
+      post = await Post.findById(req.params.id)
+        .populate('author', { handle: 1 })
+        .exec();
+    } catch (err) {
+      post = null;
+    }
 
-  if (!post) {
-    return res.status(404).json({
-      error: 'Post not found',
+    if (!post) {
+      return res.status(404).json({
+        error: 'Post not found',
+      });
+    }
+
+    if (!post.published && !req.user) {
+      return res.status(403).json({
+        error: 'Post forbidden',
+      });
+    }
+
+    res.json({
+      success: true,
+      post,
     });
-  }
-
-  res.json({
-    success: true,
-    post,
-  });
-});
+  }),
+];
 
 /* Update specific post on PUT */
 export const post_update = [
+  passport.authenticate('jwt', { session: false }),
   body('author')
     .optional()
     .trim()
@@ -137,7 +158,7 @@ export const post_update = [
           throw new Error();
         }
       } else {
-        const post = await Post.findById(req.params.id);
+        const post = await Post.findById(req.params.id).exec();
         if (Date.parse(val) < Date.parse(post.createdAt)) {
           throw new Error();
         }
@@ -180,22 +201,25 @@ export const post_update = [
 ];
 
 /* Delete specific post on DELETE */
-export const post_delete = asyncHandler(async function (req, res) {
-  let post;
-  try {
-    post = await Post.findByIdAndDelete(req.params.id).exec();
-  } catch (err) {
-    post = null;
-  }
+export const post_delete = [
+  passport.authenticate('jwt', { session: false }),
+  asyncHandler(async function (req, res) {
+    let post;
+    try {
+      post = await Post.findByIdAndDelete(req.params.id).exec();
+    } catch (err) {
+      post = null;
+    }
 
-  if (!post) {
-    return res.status(404).json({
-      error: 'Post not found',
+    if (!post) {
+      return res.status(404).json({
+        error: 'Post not found',
+      });
+    }
+
+    res.json({
+      success: true,
+      post,
     });
-  }
-
-  res.json({
-    success: true,
-    post,
-  });
-});
+  }),
+];
