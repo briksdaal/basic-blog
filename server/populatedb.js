@@ -174,6 +174,10 @@ async function commentCreate(comment) {
   });
 
   await newComment.save();
+  const post = await Post.findByIdAndUpdate(comment.post, {
+    $inc: { commentsCount: 1 },
+  });
+
   populateDebugger(`Added Comment: ${newComment.content}`);
 }
 

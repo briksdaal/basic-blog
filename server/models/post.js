@@ -11,6 +11,7 @@ const PostSchema = new Schema({
   createdAt: { type: Date, required: true, default: Date.now },
   editedAt: { type: Date, required: true, default: Date.now },
   published: { type: Boolean, required: true, default: true },
+  commentsCount: { type: Number, required: true, default: 0 },
 });
 
 const PostModel = mongoose.model('Post', PostSchema);

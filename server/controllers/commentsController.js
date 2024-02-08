@@ -3,6 +3,7 @@ import { body, validationResult } from 'express-validator';
 import Comment from '../models/comment.js';
 import Post from '../models/post.js';
 import passport from 'passport';
+import db from '../config/mongoose.js';
 
 /* Return list of all comments on GET */
 export const comment_list = [
@@ -116,7 +117,19 @@ export const comment_create = [
       editedAt: req.body.editedAt,
     });
 
-    await comment.save();
+    // start a session transaction to update both comment and commentsCount in post
+    const session = await db.startSession();
+    session.startTransaction();
+    await comment.save({ session });
+    await Post.findByIdAndUpdate(req.body.post, {
+      $inc: { commentsCount: 1 },
+    })
+      .session(session)
+      .exec();
+
+    await session.commitTransaction();
+    await session.endSession();
+    // end session
 
     res.json({
       success: true,
@@ -254,11 +267,28 @@ export const comment_delete = [
   passport.authenticate('jwt', { session: false }),
   asyncHandler(async function (req, res) {
     let comment;
+
+    // start a session transaction to delete comment and decrease commentsCount in post
+    const session = await db.startSession();
+    session.startTransaction();
+
     try {
-      comment = await Comment.findByIdAndDelete(req.params.id).exec();
+      comment = await Comment.findByIdAndDelete(req.params.id)
+        .session(session)
+        .exec();
     } catch (err) {
       comment = null;
     }
+
+    const post = await Post.findByIdAndUpdate(comment.post, {
+      $inc: { commentsCount: -1 },
+    })
+      .session(session)
+      .exec();
+
+    await session.commitTransaction();
+    await session.endSession();
+    // end session
 
     if (!comment) {
       return res.status(404).json({
