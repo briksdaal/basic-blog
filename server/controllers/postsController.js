@@ -2,7 +2,9 @@ import asyncHandler from 'express-async-handler';
 import { body, validationResult } from 'express-validator';
 import Post from '../models/post.js';
 import User from '../models/user.js';
+import Comment from '../models/comment.js';
 import passport from 'passport';
+import db from '../config/mongoose.js';
 
 /* Return list of all posts on GET */
 export const post_list = [
@@ -223,11 +225,23 @@ export const post_delete = [
   passport.authenticate('jwt', { session: false }),
   asyncHandler(async function (req, res) {
     let post;
+
+    // start a session transaction to delete post and all its comments
+    const session = await db.startSession();
+    session.startTransaction();
+
     try {
-      post = await Post.findByIdAndDelete(req.params.id).exec();
+      post = await Post.findByIdAndDelete(req.params.id)
+        .session(session)
+        .exec();
     } catch (err) {
       post = null;
     }
+    await Comment.deleteMany({ post: req.params.id }).session(session);
+
+    await session.commitTransaction();
+    await session.endSession();
+    // end session
 
     if (!post) {
       return res.status(404).json({
