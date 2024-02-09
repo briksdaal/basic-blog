@@ -12,8 +12,6 @@ import './config/mongoose.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-import indexRouter from './routes/index.js';
-import protectedRouter from './routes/protected.js';
 import usersRouter from './routes/users.js';
 import authRouter from './routes/auth.js';
 import tokensRouter from './routes/tokens.js';
@@ -33,8 +31,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/protected', protectedRouter);
 app.use('/users', usersRouter);
 app.use('/auth', authRouter);
 app.use('/tokens', tokensRouter);
