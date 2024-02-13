@@ -5,6 +5,16 @@ import User from '../models/user.js';
 import { imageUploadAndValidation, deleteImage } from './helpers/image.js';
 import passport from 'passport';
 
+// middle for verifying the requested id is for the same user in the jwt
+function verifyUser(req, res, next) {
+  if (req.user.email !== req.params.id) {
+    return res.status(403).json({
+      error: 'Forbidden',
+    });
+  }
+  next();
+}
+
 /* Handle register new user on POST */
 export const register_user_post = [
   imageUploadAndValidation,
@@ -98,15 +108,7 @@ export const user_detail = [
 /* Update specific user on PUT */
 export const update_user_put = [
   passport.authenticate('jwt', { session: false }),
-  // verify the put request is for the same user in the jwt
-  (req, res, next) => {
-    if (req.user.email !== req.params.id) {
-      return res.status(403).json({
-        error: 'Forbidden',
-      });
-    }
-    next();
-  },
+  verifyUser,
   imageUploadAndValidation,
   body('firstname', 'Firstname must not be empty')
     .optional()
@@ -183,6 +185,23 @@ export const update_user_put = [
     res.json({
       success: true,
       message: 'User updated',
+    });
+  }),
+];
+
+/* Delete specific user on DELETE */
+export const user_delete = [
+  passport.authenticate('jwt', { session: false }),
+  verifyUser,
+  asyncHandler(async function (req, res) {
+    const user = await User.findByIdAndDelete(req.user._id, {
+      projection: { password: 0 },
+    });
+    deleteImage(req.user.image);
+
+    res.json({
+      success: true,
+      user,
     });
   }),
 ];
