@@ -5,6 +5,7 @@ import User from '../models/user.js';
 import { imageUploadAndValidation, deleteImage } from './helpers/image.js';
 import passport from 'passport';
 
+/* Handle register new user on POST */
 export const register_user_post = [
   imageUploadAndValidation,
   body('firstname', 'Firstname must not be empty')
@@ -67,6 +68,34 @@ export const register_user_post = [
   }),
 ];
 
+/* Return specific user on GET */
+export const user_detail = [
+  passport.authenticate('jwt', { session: false }),
+  asyncHandler(async function (req, res) {
+    let user;
+    try {
+      user = await User.findOne(
+        { email: req.params.id },
+        { password: 0 }
+      ).exec();
+    } catch (err) {
+      user = null;
+    }
+
+    if (!user) {
+      return res.status(404).json({
+        error: 'User not found',
+      });
+    }
+
+    res.json({
+      success: true,
+      user,
+    });
+  }),
+];
+
+/* Update specific user on PUT */
 export const update_user_put = [
   passport.authenticate('jwt', { session: false }),
   // verify the put request is for the same user in the jwt
