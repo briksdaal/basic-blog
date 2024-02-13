@@ -2,8 +2,11 @@ import asyncHandler from 'express-async-handler';
 import { body, validationResult } from 'express-validator';
 import bcrypt from 'bcrypt';
 import User from '../models/user.js';
+import { imageUploadAndValidation, deleteImage } from './helpers/image.js';
+import passport from 'passport';
 
 export const register_user_post = [
+  imageUploadAndValidation,
   body('firstname', 'Firstname must not be empty')
     .trim()
     .isLength({ min: 1 })
@@ -39,6 +42,8 @@ export const register_user_post = [
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
+      deleteImage(req.file?.path);
+
       return res.status(400).json(errors);
     }
 
@@ -52,8 +57,103 @@ export const register_user_post = [
       email,
       handle,
       password: hashedPassword,
+      image: req.file?.path || null,
     });
     await newUser.save();
-    res.json({ message: `New user ${email} saved` });
+    res.json({
+      success: true,
+      message: `New user ${email} saved`,
+    });
+  }),
+];
+
+export const update_user_put = [
+  passport.authenticate('jwt', { session: false }),
+  // verify the put request is for the same user in the jwt
+  (req, res, next) => {
+    if (req.user.email !== req.params.id) {
+      return res.status(403).json({
+        error: 'Forbidden',
+      });
+    }
+    next();
+  },
+  imageUploadAndValidation,
+  body('firstname', 'Firstname must not be empty')
+    .optional()
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+  body('lastname', 'Lastname must not be empty')
+    .optional()
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+  body('handle', 'Handle must not be empty')
+    .optional()
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+  body('password', 'Password must not be empty')
+    .optional()
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+  body('password-confirm', "Passwords don't match")
+    .trim()
+    .custom((val, { req }) => {
+      if (!req.body.password) {
+        return true;
+      }
+
+      return val === req.body.password;
+    })
+    .escape(),
+  asyncHandler(async function (req, res, next) {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      deleteImage(req.file?.path);
+
+      return res.status(400).json(errors);
+    }
+
+    const user = req.user;
+
+    Object.keys(req.body).forEach((e) => {
+      if (
+        e === 'email' ||
+        e === 'image' ||
+        e === 'password' ||
+        e === 'password-confirm'
+      ) {
+        return;
+      }
+      user[e] = req.body[e];
+    });
+
+    // update password if existing
+    if (req.body.password) {
+      const hashedPassword = await bcrypt.hash(req.body.password, 10);
+      user.password = hashedPassword;
+    }
+
+    // update image if existing
+    if (req.file) {
+      deleteImage(user.image);
+      user.image = req.file.path;
+    }
+    // if no image file but empty image string remove current image
+    else if (req.body.image === '') {
+      deleteImage(user.image);
+      user.image = null;
+    }
+
+    await user.save();
+
+    res.json({
+      success: true,
+      message: 'User updated',
+    });
   }),
 ];
