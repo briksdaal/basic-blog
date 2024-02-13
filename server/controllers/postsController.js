@@ -3,6 +3,8 @@ import { body, validationResult } from 'express-validator';
 import Post from '../models/post.js';
 import User from '../models/user.js';
 import Comment from '../models/comment.js';
+import { imageUploadAndValidation, deleteImage } from './helpers/image.js';
+
 import passport from 'passport';
 import db from '../config/mongoose.js';
 
@@ -31,6 +33,7 @@ export const post_list = [
 /* Handle create new post on POST */
 export const post_create = [
   passport.authenticate('jwt', { session: false }),
+  imageUploadAndValidation,
   body('author')
     .trim()
     .isLength({ min: 1 })
@@ -73,6 +76,8 @@ export const post_create = [
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
+      deleteImage(req.file?.path);
+
       return res.status(400).json({
         errors,
       });
@@ -85,6 +90,7 @@ export const post_create = [
       createdAt: req.body.createdAt,
       editedAt: req.body.editedAt,
       published: req.body.published,
+      image: req.file?.path || null,
     });
 
     await post.save();
@@ -131,6 +137,7 @@ export const post_detail = [
 /* Update specific post on PUT */
 export const post_update = [
   passport.authenticate('jwt', { session: false }),
+  imageUploadAndValidation,
   body('author')
     .optional()
     .trim()
@@ -180,6 +187,8 @@ export const post_update = [
   asyncHandler(async function (req, res) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
+      deleteImage(req.file?.path);
+
       return res.status(400).json({
         errors,
       });
@@ -197,10 +206,23 @@ export const post_update = [
         error: 'Post not found',
       });
     }
-
     Object.keys(req.body).forEach((e) => {
+      if (e === 'image') {
+        return;
+      }
       post[e] = req.body[e];
     });
+
+    // update image if existing
+    if (req.file) {
+      deleteImage(post.image);
+      post.image = req.file.path;
+    }
+    // if no image file but empty image string remove current image
+    else if (req.body.image === '') {
+      deleteImage(post.image);
+      post.image = null;
+    }
 
     // update editedAt if it isn't in req body
     if (!req.body.editedAt) {
@@ -248,6 +270,8 @@ export const post_delete = [
         error: 'Post not found',
       });
     }
+
+    deleteImage(post.image);
 
     res.json({
       success: true,
