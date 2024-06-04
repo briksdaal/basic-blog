@@ -2,8 +2,10 @@ import asyncHandler from 'express-async-handler';
 import { body, validationResult } from 'express-validator';
 import bcrypt from 'bcrypt';
 import User from '../models/user.js';
+import Post from '../models/post.js';
 import { imageUploadAndValidation, deleteImage } from './helpers/image.js';
 import passport from 'passport';
+import db from '../config/mongoose.js';
 
 // middle for verifying the requested id is for the same user in the jwt
 function verifyUser(req, res, next) {
@@ -194,9 +196,34 @@ export const user_delete = [
   passport.authenticate('jwt', { session: false }),
   verifyUser,
   asyncHandler(async function (req, res) {
-    const user = await User.findByIdAndDelete(req.user._id, {
-      projection: { password: 0 },
-    });
+    let user;
+
+    // start a session transaction to delete user and all its comments
+    const session = await db.startSession();
+    session.startTransaction();
+
+    try {
+      user = await User.findByIdAndDelete(req.user._id, {
+        projection: { password: 0 },
+      }).session(session);
+    } catch (err) {
+      user = null;
+    }
+
+    await Post.updateMany({ author: req.user._id }, { author: null }).session(
+      session
+    );
+
+    await session.commitTransaction();
+    await session.endSession();
+    // end session
+
+    if (!user) {
+      return res.status(404).json({
+        error: 'User not found',
+      });
+    }
+
     deleteImage(req.user.image);
 
     res.json({

@@ -6,7 +6,12 @@ mongoose.Schema.Types.String.checkRequired((v) => v != null);
 
 const PostSchema = new Schema(
   {
-    author: { type: Schema.Types.ObjectId, required: true, ref: 'User' },
+    author: {
+      type: Schema.Types.ObjectId,
+      required: true,
+      ref: 'User',
+      default: null,
+    },
     title: { type: String, required: true },
     content: { type: String, required: true },
     createdAt: { type: Date, required: true, default: Date.now },
