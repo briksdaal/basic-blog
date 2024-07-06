@@ -3,6 +3,7 @@ import path from 'path';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import { fileURLToPath } from 'url';
+import cors from 'cors';
 import passport from 'passport';
 import { jwtStrategy, anonymousStrategy } from './config/passport.js';
 import createError from 'http-errors';
@@ -22,6 +23,8 @@ const app = express();
 
 passport.use(jwtStrategy);
 passport.use(anonymousStrategy);
+
+app.use(cors());
 
 app.use(passport.initialize());
 
