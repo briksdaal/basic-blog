@@ -1,11 +1,9 @@
-import PropTypes from 'prop-types';
+import SinglePost from '../components/SinglePost';
+import FetchWrapper from '../components/FetchWrapper';
 
 function PostView({ postId }) {
-  return <div>Post {postId}</div>;
+  const FetchedPost = FetchWrapper(SinglePost, `posts/${postId}`);
+  return <FetchedPost />;
 }
-
-PostView.propTypes = {
-  postId: PropTypes.string
-};
 
 export default PostView;
