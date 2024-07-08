@@ -1,5 +1,9 @@
+import FetchWrapper from '../components/FetchWrapper';
+import PostList from '../components/PostList';
+
 function HomeView() {
-  return <div>Home</div>;
+  const FetchedPostList = FetchWrapper(PostList, 'posts/');
+  return <FetchedPostList />;
 }
 
 export default HomeView;

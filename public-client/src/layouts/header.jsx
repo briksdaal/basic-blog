@@ -2,9 +2,9 @@ import { Link } from 'react-router-dom';
 
 function Header() {
   return (
-    <header className="container mx-auto py-8">
+    <header className="container mx-auto py-8 xl:px-64">
       <h2 className="text-3xl">
-        <Link>JourneyJot</Link>
+        <Link to="/">JourneyJot</Link>
       </h2>
     </header>
   );
