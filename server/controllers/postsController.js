@@ -6,16 +6,20 @@ import Comment from '../models/comment.js';
 import { imageUploadAndValidation, deleteImage } from './helpers/image.js';
 
 import passport from 'passport';
+import { ObjectIdIsValid } from '../config/mongoose.js';
 import db from '../config/mongoose.js';
 
 /* Return list of all posts on GET */
 export const post_list = [
   passport.authenticate(['jwt', 'anonymous'], { session: false }),
-  asyncHandler(async function (req, res, next) {
+  asyncHandler(async function (req, res) {
     // show only published posts to regular visitors
     const filter = { published: true };
     if (req.user) {
       delete filter.published;
+    }
+    if (ObjectIdIsValid(req.query.authorid)) {
+      filter.author = { _id: req.query.authorid };
     }
 
     const allPosts = await Post.find(filter)

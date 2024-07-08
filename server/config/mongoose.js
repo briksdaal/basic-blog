@@ -20,4 +20,6 @@ main().catch((err) => dbDebugger(err));
 const db = mongoose.connection;
 db.on('error', () => dbDebugger('Mongo connection error'));
 
+export const ObjectIdIsValid = mongoose.Types.ObjectId.isValid;
+
 export default db;
