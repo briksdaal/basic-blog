@@ -82,14 +82,11 @@ export const register_user_post = [
 
 /* Return specific user on GET */
 export const user_detail = [
-  passport.authenticate('jwt', { session: false }),
+  passport.authenticate(['jwt', 'anonymous'], { session: false }),
   asyncHandler(async function (req, res) {
     let user;
     try {
-      user = await User.findOne(
-        { email: req.params.id },
-        { password: 0 }
-      ).exec();
+      user = await User.findById(req.params.id, { password: 0 }).exec();
     } catch (err) {
       user = null;
     }
