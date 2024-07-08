@@ -131,3 +131,6 @@ dist
 
 # rest route tests
 rest_clients/
+
+# uploads
+server/public/uploads
