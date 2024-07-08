@@ -20,11 +20,22 @@ const PostSchema = new Schema(
     commentsCount: { type: Number, required: true, default: 0 },
     image: { type: String },
   },
-  { toJSON: { virtuals: true } }
+  {
+    toJSON: {
+      virtuals: true,
+      transform: function (doc, ret) {
+        delete ret.image;
+      },
+    },
+  }
 );
 
 PostSchema.virtual('timeToRead').get(function () {
   return Math.ceil(this.content.split(' ').length / 182);
+});
+
+PostSchema.virtual('imageUrl').get(function () {
+  return this.image && this.image.split('public/')[1];
 });
 
 const PostModel = mongoose.model('Post', PostSchema);
