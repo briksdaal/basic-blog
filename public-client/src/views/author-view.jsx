@@ -1,11 +1,9 @@
-import PropTypes from 'prop-types';
+import Author from '../components/Author';
+import FetchWrapper from '../components/FetchWrapper';
 
 function AuthorView({ authorId }) {
-  return <div>Author {authorId}</div>;
+  const FetchedAuthor = FetchWrapper(Author, `users/${authorId}`);
+  return <FetchedAuthor />;
 }
-
-AuthorView.propTypes = {
-  authorId: PropTypes.string
-};
 
 export default AuthorView;
