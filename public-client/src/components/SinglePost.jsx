@@ -1,8 +1,23 @@
 import { Link } from 'react-router-dom';
+import FetchWrapper from './FetchWrapper';
+import CommentsList from './CommentsList';
 
 function SinglePost({ data = null }) {
   const post = data?.post;
-  console.log(post);
+
+  if (!post) {
+    return (
+      <div>
+        <h2 className="text-center text-2xl">No post data found</h2>
+      </div>
+    );
+  }
+
+  const FetchedComments = FetchWrapper(
+    CommentsList,
+    `comments/?post=${post._id}`
+  );
+
   return (
     <div>
       <h2>{post.title}</h2>
@@ -24,6 +39,11 @@ function SinglePost({ data = null }) {
         />
       )}
       <p className="whitespace-break-spaces">{post.content}</p>
+
+      <div className="mt-4">
+        <h3 className="text-lg">Comments</h3>
+        <FetchedComments />
+      </div>
     </div>
   );
 }
