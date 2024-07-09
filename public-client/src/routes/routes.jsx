@@ -1,3 +1,4 @@
+import { Navigate } from 'react-router-dom';
 import App from '../App';
 import HomePage from '../pages/home-page';
 import PostPage from '../pages/post-page';
@@ -12,6 +13,10 @@ const routes = [
       {
         index: true,
         element: <HomePage />
+      },
+      {
+        path: '/posts/',
+        element: <Navigate to="/" replace={true} />
       },
       {
         path: '/posts/:postId',
