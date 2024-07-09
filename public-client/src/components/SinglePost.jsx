@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
-import FetchWrapper from './FetchWrapper';
-import CommentsList from './CommentsList';
+import CommentsSection from './CommentSection';
 
 function SinglePost({ data = null }) {
   const post = data?.post;
@@ -12,11 +11,6 @@ function SinglePost({ data = null }) {
       </div>
     );
   }
-
-  const FetchedComments = FetchWrapper(
-    CommentsList,
-    `comments/?post=${post._id}`
-  );
 
   return (
     <div>
@@ -40,10 +34,7 @@ function SinglePost({ data = null }) {
       )}
       <p className="whitespace-break-spaces">{post.content}</p>
 
-      <div className="mt-4">
-        <h3 className="text-lg">Comments</h3>
-        <FetchedComments />
-      </div>
+      <CommentsSection postId={post._id} />
     </div>
   );
 }
