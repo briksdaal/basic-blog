@@ -12,7 +12,7 @@ function PostList({ data = null }) {
   }
 
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-8 divide-y divide-slate-300">
       {posts.map((p) => (
         <PostSummary key={p._id} post={p} />
       ))}
