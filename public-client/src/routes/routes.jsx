@@ -9,12 +9,7 @@ import ScrollToTop from '../components/ScrollToTop';
 const routes = [
   {
     path: '/',
-    element: (
-      <>
-        <ScrollToTop />
-        <App />
-      </>
-    ),
+    element: <App />,
     children: [
       {
         index: true,
