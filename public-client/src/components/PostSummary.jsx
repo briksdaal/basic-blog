@@ -10,14 +10,11 @@ function PostSummary({ post }) {
       </Link>
       <div className="flex justify-between gap-16">
         <span>
-          <Typography type="regular">
-            by{' '}
-            <Typography type="linkLight">
-              <Link to={`/authors/${post.author._id}`}>
-                {post.author.handle}
-              </Link>
-            </Typography>
-          </Typography>
+          <Typography type="regular">by </Typography>
+
+          <Link to={`/authors/${post.author._id}`}>
+            <Typography type="linkLight">{post.author.handle} </Typography>
+          </Link>
         </span>
         <Link to={`/posts/${post._id}`}>
           <Typography type="small" className="flex items-center gap-2">

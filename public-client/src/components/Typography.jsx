@@ -19,10 +19,12 @@ function Typography({ type, children, className = '' }) {
       );
     case 'regular':
       return (
-        <p className={createClassString('text-xl font-light')}>{children}</p>
+        <span className={createClassString('text-xl font-light')}>
+          {children}
+        </span>
       );
     case 'small':
-      return <p className={createClassString('text-lg')}>{children}</p>;
+      return <span className={createClassString('text-lg')}>{children}</span>;
     case 'linkLight':
       return (
         <span className={createClassString('text-xl font-light text-sky-500')}>
