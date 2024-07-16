@@ -32,9 +32,12 @@ function PostSummary({ post }) {
           />
         </Link>
       )}
-      <p className="line-clamp-2 overflow-hidden text-ellipsis">
-        <Typography type="content">{post.content}</Typography>
-      </p>
+      <Typography
+        type="content"
+        className="line-clamp-2 overflow-hidden text-ellipsis">
+        {post.content}
+      </Typography>
+
       <div className="flex justify-between gap-16">
         <Link to={`/posts/${post._id}`}>
           <Typography type={'linkLight'}>Read more...</Typography>
