@@ -7,15 +7,30 @@ import { imageUploadAndValidation, deleteImage } from './helpers/image.js';
 import passport from 'passport';
 import db from '../config/mongoose.js';
 
-// middle for verifying the requested id is for the same user in the jwt
+/* Middleware for verifying the requested id is for the same user in the jwt */
 function verifyUser(req, res, next) {
-  if (req.user.email !== req.params.id) {
+  if (!req.user._id.equals(req.params.id)) {
     return res.status(403).json({
       error: 'Forbidden',
     });
   }
   next();
 }
+
+/* Return list of all users on GET */
+export const user_list = [
+  passport.authenticate('jwt', { session: false }),
+  asyncHandler(async function (req, res) {
+    const allUsers = await User.find({}, { password: 0 })
+      .sort({ createdAt: -1 })
+      .exec();
+
+    res.json({
+      success: true,
+      users: allUsers,
+    });
+  }),
+];
 
 /* Handle register new user on POST */
 export const register_user_post = [

@@ -1,11 +1,15 @@
 import express from 'express';
 const router = express.Router();
 import {
+  user_list,
   register_user_post,
   user_detail,
   update_user_put,
   user_delete,
 } from '../controllers/usersController.js';
+
+/* GET request for list of all users */
+router.get('/', user_list);
 
 /* POST request to register new user */
 router.post('/', register_user_post);
