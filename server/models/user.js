@@ -21,6 +21,10 @@ const UserSchema = new Schema(
   }
 );
 
+UserSchema.virtual('fullname').get(function () {
+  return `${this.firstname} ${this.lastname}`;
+});
+
 UserSchema.virtual('imageUrl').get(function () {
   return this.image && this.image.split('public/')[1];
 });
