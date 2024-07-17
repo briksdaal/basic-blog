@@ -163,7 +163,7 @@ export const update_user_put = [
       return res.status(400).json(errors);
     }
 
-    const user = req.user;
+    const user = await User.findById(req.params.id);
 
     Object.keys(req.body).forEach((e) => {
       if (
@@ -193,7 +193,6 @@ export const update_user_put = [
       deleteImage(user.image);
       user.image = null;
     }
-
     await user.save();
 
     res.json({
