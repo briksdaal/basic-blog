@@ -13,8 +13,9 @@ function CommentsSection({ postId }) {
 
   return (
     <div
+      id="comments"
       ref={containerRef}
-      className="mt-4"
+      className="mt-4 scroll-my-20"
       style={{ minHeight: `${minHeight}px` }}>
       <h3 className="text-lg">Comments</h3>
       <AddComment postId={postId} updateList={normalizeMinHeight} />

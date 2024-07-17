@@ -1,6 +1,7 @@
 import useFetch from '../hooks/useFetch';
 import ErrorMessage from './ErrorMessage';
 import Loading from './Loading';
+import ScrollToAnchor from './ScrollToAnchor';
 
 function FetchWrapper({ Child, suffixUrl, trigger, ...props }) {
   const [data, loading, error] = useFetch(suffixUrl, trigger);
@@ -11,7 +12,12 @@ function FetchWrapper({ Child, suffixUrl, trigger, ...props }) {
   if (error) {
     return <ErrorMessage error={error} />;
   }
-  return <Child {...props} data={data} />;
+  return (
+    <>
+      <ScrollToAnchor />
+      <Child {...props} data={data} />
+    </>
+  );
 }
 
 export default FetchWrapper;

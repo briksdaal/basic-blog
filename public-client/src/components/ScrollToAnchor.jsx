@@ -5,6 +5,7 @@ function ScrollToAnchor() {
   const { hash } = useLocation();
   useEffect(() => {
     if (!hash) return;
+    console.log(hash);
     setTimeout(() => {
       document
         .querySelector(hash)

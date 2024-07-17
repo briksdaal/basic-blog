@@ -17,10 +17,10 @@ function PostSummary({ post, minimized }) {
               <Typography type="linkLight">{post.author.handle} </Typography>
             </Link>
           </span>
-          <Link to={`/posts/${post._id}`}>
+          <Link to={`/posts/${post._id}#comments`}>
             <Typography type="small" className="flex items-center gap-2">
               {post.commentsCount} <FaRegMessage className="text-base" />
-            </Typography>{' '}
+            </Typography>
           </Link>
         </div>
       )}
