@@ -23,7 +23,7 @@ function Header() {
 
   return (
     <header
-      className={`fixed top-0 ${isScrolled ? 'py-3' : 'py-8'} w-full bg-white shadow-md transition-all ease-in-out`}>
+      className={`fixed top-0 ${isScrolled ? 'py-3' : 'py-8'} z-10 w-full bg-white shadow-md transition-all ease-in-out`}>
       <div className="container mx-auto xl:px-64">
         <h1 className="text-3xl">
           <Link to="/">
