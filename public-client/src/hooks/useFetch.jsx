@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-function useFetch(suffixUrl = '') {
+function useFetch(suffixUrl = '', trigger) {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -28,7 +28,7 @@ function useFetch(suffixUrl = '') {
       .finally(() => {
         setLoading(false);
       });
-  }, [suffixUrl]);
+  }, [suffixUrl, trigger]);
 
   return [data, loading, error];
 }

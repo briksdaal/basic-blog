@@ -10,11 +10,6 @@ function Author({ data = null }) {
     return <h2 className="text-2xl">User not found</h2>;
   }
 
-  const FetchedPostList = FetchWrapper(
-    PostList,
-    `posts/?authorid=${author._id}`
-  );
-
   return (
     <div className="flex flex-col md:flex-row">
       <div className="flex-1 md:flex-initial">
@@ -37,7 +32,10 @@ function Author({ data = null }) {
         </div>
       </div>
       <div className="flex-[3_3_0%] px-8 md:flex-initial">
-        <FetchedPostList />
+        <FetchWrapper
+          Child={PostList}
+          suffixUrl={`posts/?authorid=${author._id}`}
+        />
       </div>
     </div>
   );

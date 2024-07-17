@@ -88,9 +88,13 @@ function AddComment({ postId, updateList }) {
             <button className="flex border-2 border-indigo-600" type="submit">
               Send
             </button>
-            {loading && <h3>Sending...</h3>}
-            {generalError && <div className="text-red-600">{generalError}</div>}
-            {success && <div>Your comment was successfully sent!</div>}
+            <div className="min-h-8">
+              {loading && <h3>Sending...</h3>}
+              {generalError && (
+                <div className="text-red-600">{generalError}</div>
+              )}
+              {success && <div>Your comment was successfully sent!</div>}
+            </div>
           </div>
         </div>
       </form>

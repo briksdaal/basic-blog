@@ -11,11 +11,6 @@ function CommentsSection({ postId }) {
     setMinHeight(Math.max(minHeight, containerRef?.current?.offsetHeight));
   }
 
-  const FetchedComments = FetchWrapper(
-    CommentsList,
-    `comments/?post=${postId}`
-  );
-
   return (
     <div
       ref={containerRef}
@@ -23,7 +18,11 @@ function CommentsSection({ postId }) {
       style={{ minHeight: `${minHeight}px` }}>
       <h3 className="text-lg">Comments</h3>
       <AddComment postId={postId} updateList={normalizeMinHeight} />
-      <FetchedComments />
+      <FetchWrapper
+        Child={CommentsList}
+        suffixUrl={`comments/?post=${postId}`}
+        trigger={minHeight}
+      />
     </div>
   );
 }
