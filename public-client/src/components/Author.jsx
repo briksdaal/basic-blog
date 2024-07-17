@@ -35,6 +35,7 @@ function Author({ data = null }) {
         <FetchWrapper
           Child={PostList}
           suffixUrl={`posts/?authorid=${author._id}`}
+          minimized={true}
         />
       </div>
     </div>

@@ -2,28 +2,30 @@ import { Link } from 'react-router-dom';
 import Typography from './Typography';
 import { FaRegMessage } from 'react-icons/fa6';
 
-function PostSummary({ post }) {
+function PostSummary({ post, minimized }) {
   return (
     <div className="flex flex-col gap-4 pt-8 first:pt-0">
       <Link to={`/posts/${post._id}`}>
         <Typography type="title">{post.title}</Typography>
       </Link>
-      <div className="flex justify-between gap-16">
-        <span>
-          <Typography type="regular">by </Typography>
+      {!minimized && (
+        <div className="flex justify-between gap-16">
+          <span>
+            <Typography type="regular">by </Typography>
 
-          <Link to={`/authors/${post.author._id}`}>
-            <Typography type="linkLight">{post.author.handle} </Typography>
+            <Link to={`/authors/${post.author._id}`}>
+              <Typography type="linkLight">{post.author.handle} </Typography>
+            </Link>
+          </span>
+          <Link to={`/posts/${post._id}`}>
+            <Typography type="small" className="flex items-center gap-2">
+              {post.commentsCount} <FaRegMessage className="text-base" />
+            </Typography>{' '}
           </Link>
-        </span>
-        <Link to={`/posts/${post._id}`}>
-          <Typography type="small" className="flex items-center gap-2">
-            {post.commentsCount} <FaRegMessage className="text-base" />
-          </Typography>{' '}
-        </Link>
-      </div>
+        </div>
+      )}
 
-      {post.imageUrl && (
+      {!minimized && post.imageUrl && (
         <Link to={`/posts/${post._id}`}>
           <img
             className="h-[28rem] w-full object-cover"
