@@ -85,7 +85,10 @@ function AddComment({ postId, updateList }) {
           {contentError && <div className="text-red-600">{contentError}</div>}
           <input type="hidden" id="post" name="post" value={postId} />
           <div>
-            <button className="flex border-2 border-indigo-600" type="submit">
+            <button
+              className="flex border-2 border-indigo-600"
+              type="submit"
+              disabled={loading}>
               Send
             </button>
             <div className="min-h-8">
