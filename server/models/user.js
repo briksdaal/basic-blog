@@ -10,6 +10,7 @@ const UserSchema = new Schema(
     handle: { type: String, required: true },
     password: { type: String, required: true },
     image: { type: String },
+    admin: { type: Boolean, required: true, default: false },
   },
   {
     toJSON: {

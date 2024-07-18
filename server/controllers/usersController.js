@@ -7,9 +7,18 @@ import { imageUploadAndValidation, deleteImage } from './helpers/image.js';
 import passport from 'passport';
 import db from '../config/mongoose.js';
 
-/* Middleware for verifying the requested id is for the same user in the jwt */
+/* Middleware for verifying user is admin or that the requested id is for the same user in the jwt */
 function verifyUser(req, res, next) {
-  if (!req.user._id.equals(req.params.id)) {
+  if (!req.user.admin && !req.user._id.equals(req.params.id)) {
+    return res.status(403).json({
+      error: 'Forbidden',
+    });
+  }
+  next();
+}
+
+function verifyAdmin(req, res, next) {
+  if (!req.user.admin) {
     return res.status(403).json({
       error: 'Forbidden',
     });
@@ -34,6 +43,8 @@ export const user_list = [
 
 /* Handle register new user on POST */
 export const register_user_post = [
+  passport.authenticate('jwt', { session: false }),
+  verifyAdmin,
   imageUploadAndValidation,
   body('firstname', 'Firstname must not be empty')
     .trim()
@@ -66,6 +77,7 @@ export const register_user_post = [
     .trim()
     .custom((val, { req }) => val === req.body.password)
     .escape(),
+  body('admin').trim().toBoolean(true).escape(),
   asyncHandler(async function (req, res, next) {
     const errors = validationResult(req);
 
@@ -75,7 +87,7 @@ export const register_user_post = [
       return res.status(400).json(errors);
     }
 
-    const { firstname, lastname, email, handle, password } = req.body;
+    const { firstname, lastname, email, handle, password, admin } = req.body;
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -86,6 +98,7 @@ export const register_user_post = [
       handle,
       password: hashedPassword,
       image: req.file?.path || null,
+      admin,
     });
     await newUser.save();
     res.json({
@@ -154,6 +167,7 @@ export const update_user_put = [
       return val === req.body.password;
     })
     .escape(),
+  body('admin').trim().toBoolean(true).escape(),
   asyncHandler(async function (req, res, next) {
     const errors = validationResult(req);
 
@@ -164,6 +178,12 @@ export const update_user_put = [
     }
 
     const user = await User.findById(req.params.id);
+
+    if (!user) {
+      return res.status(404).json({
+        error: 'User not found',
+      });
+    }
 
     Object.keys(req.body).forEach((e) => {
       if (
@@ -193,6 +213,7 @@ export const update_user_put = [
       deleteImage(user.image);
       user.image = null;
     }
+
     await user.save();
 
     res.json({
