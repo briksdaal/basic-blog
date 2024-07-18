@@ -3,6 +3,7 @@ import { body, validationResult } from 'express-validator';
 import bcrypt from 'bcrypt';
 import User from '../models/user.js';
 import Post from '../models/post.js';
+import Session from '../models/session.js';
 import { imageUploadAndValidation, deleteImage } from './helpers/image.js';
 import passport from 'passport';
 import db from '../config/mongoose.js';
@@ -228,27 +229,7 @@ export const user_delete = [
   passport.authenticate('jwt', { session: false }),
   verifyUser,
   asyncHandler(async function (req, res) {
-    let user;
-
-    // start a session transaction to delete user and all its comments
-    const session = await db.startSession();
-    session.startTransaction();
-
-    try {
-      user = await User.findByIdAndDelete(req.user._id, {
-        projection: { password: 0 },
-      }).session(session);
-    } catch (err) {
-      user = null;
-    }
-
-    await Post.updateMany({ author: req.user._id }, { author: null }).session(
-      session
-    );
-
-    await session.commitTransaction();
-    await session.endSession();
-    // end session
+    const user = await User.findById(req.params.id, { password: 0 });
 
     if (!user) {
       return res.status(404).json({
@@ -256,7 +237,32 @@ export const user_delete = [
       });
     }
 
-    deleteImage(req.user.image);
+    if (user.admin) {
+      const adminCount = await User.countDocuments({ admin: true });
+      if (adminCount === 1) {
+        return res.status(405).json({
+          error: "Can't delete last admin user",
+        });
+      }
+    }
+
+    // start a session transaction to delete user, remove author association from posts, and remove active session
+    const session = await db.startSession();
+    session.startTransaction();
+
+    await User.findByIdAndDelete(user._id).session(session);
+
+    await Post.updateMany({ author: user._id }, { author: null }).session(
+      session
+    );
+
+    await Session.findOneAndDelete({ user: user.email }).session(session);
+
+    await session.commitTransaction();
+    await session.endSession();
+    // end session
+
+    deleteImage(user.image);
 
     res.json({
       success: true,
