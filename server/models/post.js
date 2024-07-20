@@ -1,4 +1,5 @@
 import mongoose, { mongo } from 'mongoose';
+import { decode } from 'html-entities';
 
 const Schema = mongoose.Schema;
 
@@ -24,6 +25,8 @@ const PostSchema = new Schema(
     toJSON: {
       virtuals: true,
       transform: function (doc, ret) {
+        ret.title = decode(ret.title);
+        ret.content = decode(ret.content);
         delete ret.image;
       },
     },

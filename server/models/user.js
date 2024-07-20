@@ -1,4 +1,5 @@
 import mongoose, { mongo } from 'mongoose';
+import { decode } from 'html-entities';
 
 const Schema = mongoose.Schema;
 
@@ -16,6 +17,10 @@ const UserSchema = new Schema(
     toJSON: {
       virtuals: true,
       transform: function (doc, ret) {
+        ret.firstname = decode(ret.firstname);
+        ret.lastname = decode(ret.lastname);
+        ret.email = decode(ret.email);
+        ret.handle = decode(ret.handle);
         delete ret.image;
       },
     },
