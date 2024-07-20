@@ -41,7 +41,7 @@ export const post_create = [
   body('author')
     .trim()
     .isLength({ min: 1 })
-    .withMessage('Author must contain at least 1 charcters')
+    .withMessage('Author must contain at least 1 characters')
     .custom(async (val) => {
       const foundAuthor = await User.findById(val).exec();
       if (!foundAuthor) {
@@ -50,7 +50,7 @@ export const post_create = [
     })
     .withMessage('Author is not recognized')
     .escape(),
-  body('title', 'Title must contain at least 1 charcters')
+  body('title', 'Title must contain at least 1 characters')
     .trim()
     .isLength({ min: 1 })
     .escape(),
@@ -146,7 +146,7 @@ export const post_update = [
     .optional()
     .trim()
     .isLength({ min: 1 })
-    .withMessage('Author must contain at least 1 charcters')
+    .withMessage('Author must contain at least 1 characters')
     .custom(async (val) => {
       const foundAuthor = await User.findById(val).exec();
       if (!foundAuthor) {
@@ -155,7 +155,7 @@ export const post_update = [
     })
     .withMessage('Author is not recognized')
     .escape(),
-  body('title', 'Title must contain at least 1 charcters')
+  body('title', 'Title must contain at least 1 characters')
     .optional()
     .trim()
     .isLength({ min: 1 })

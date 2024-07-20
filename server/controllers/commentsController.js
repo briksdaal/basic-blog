@@ -57,7 +57,7 @@ export const comment_create = [
   body('post')
     .trim()
     .isLength({ min: 1 })
-    .withMessage('Post must contain at least 1 charcters')
+    .withMessage('Post must contain at least 1 characters')
     .custom(async (val) => {
       const foundPost = await Post.findById(val).exec();
       if (!foundPost) {
@@ -66,12 +66,12 @@ export const comment_create = [
     })
     .withMessage('Post is not recognized')
     .escape(),
-  body('author', 'Author must contain at least 1 charcters')
+  body('author', 'Author must contain at least 1 characters')
     .optional()
     .trim()
     .isLength({ min: 1 })
     .escape(),
-  body('content', 'Content must contain at least 1 charcters')
+  body('content', 'Content must contain at least 1 characters')
     .trim()
     .isLength({ min: 1 })
     .escape(),
@@ -177,7 +177,7 @@ export const comment_update = [
     .optional()
     .trim()
     .isLength({ min: 1 })
-    .withMessage('Post must contain at least 1 charcters')
+    .withMessage('Post must contain at least 1 characters')
     .custom(async (val) => {
       const foundPost = await Post.findById(val).exec();
       if (!foundPost) {
@@ -186,12 +186,12 @@ export const comment_update = [
     })
     .withMessage('Post is not recognized')
     .escape(),
-  body('author', 'Author must contain at least 1 charcters')
+  body('author', 'Author must contain at least 1 characters')
     .optional()
     .trim()
     .isLength({ min: 1 })
     .escape(),
-  body('content', 'Content must contain at least 1 charcters')
+  body('content', 'Content must contain at least 1 characters')
     .optional()
     .trim()
     .isLength({ min: 1 })
