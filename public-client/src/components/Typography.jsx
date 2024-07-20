@@ -10,7 +10,13 @@ function Typography({ type, children, className = '' }) {
 
   switch (type) {
     case 'title':
-      return <h2 className={createClassString('text-4xl')}>{children}</h2>;
+      return (
+        <h2 className={createClassString('text-4xl leading-snug')}>
+          {children}
+        </h2>
+      );
+    case 'smallTitle':
+      return <h2 className={createClassString('text-2xl')}>{children}</h2>;
     case 'content':
       return (
         <p className={createClassString('text-xl font-light leading-8')}>
@@ -25,6 +31,8 @@ function Typography({ type, children, className = '' }) {
       );
     case 'small':
       return <span className={createClassString('text-lg')}>{children}</span>;
+    case 'smaller':
+      return <span className={createClassString('text-base')}>{children}</span>;
     case 'linkLight':
       return (
         <span className={createClassString('text-xl font-light text-sky-500')}>
