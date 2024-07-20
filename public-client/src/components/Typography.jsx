@@ -17,9 +17,21 @@ function Typography({ type, children, className = '' }) {
       );
     case 'smallTitle':
       return <h2 className={createClassString('text-2xl')}>{children}</h2>;
-    case 'content':
+    case 'contentSummary':
       return (
-        <p className={createClassString('text-xl font-light leading-8')}>
+        <p
+          className={createClassString(
+            'line-clamp-2 overflow-hidden text-ellipsis text-xl font-light leading-8'
+          )}>
+          {children}
+        </p>
+      );
+    case 'contentFull':
+      return (
+        <p
+          className={createClassString(
+            'whitespace-break-spaces text-xl font-light leading-10'
+          )}>
           {children}
         </p>
       );
@@ -33,6 +45,12 @@ function Typography({ type, children, className = '' }) {
       return <span className={createClassString('text-lg')}>{children}</span>;
     case 'smaller':
       return <span className={createClassString('text-base')}>{children}</span>;
+    case 'smallerBold':
+      return (
+        <span className={createClassString('text-base font-bold')}>
+          {children}
+        </span>
+      );
     case 'linkLight':
       return (
         <span className={createClassString('text-xl font-light text-sky-500')}>

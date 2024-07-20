@@ -34,11 +34,7 @@ function PostSummary({ post, minimized }) {
           />
         </Link>
       )}
-      <Typography
-        type="content"
-        className="line-clamp-2 overflow-hidden text-ellipsis">
-        {post.content}
-      </Typography>
+      <Typography type="contentSummary">{post.content}</Typography>
 
       <div className="flex justify-between gap-16">
         <Link to={`/posts/${post._id}`}>

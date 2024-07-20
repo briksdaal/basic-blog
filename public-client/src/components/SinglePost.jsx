@@ -1,5 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
+import Typography from './Typography';
 import CommentsSection from './CommentSection';
 
 function SinglePost({ data = null }) {
@@ -8,7 +9,9 @@ function SinglePost({ data = null }) {
   if (!post) {
     return (
       <div>
-        <h2 className="text-center text-2xl">No post data found</h2>
+        <Typography type="title" className="text-center">
+          No post data found
+        </Typography>
       </div>
     );
   }
@@ -18,26 +21,24 @@ function SinglePost({ data = null }) {
       <Helmet>
         <title>JourneyJot - {post.title}</title>
       </Helmet>
-      <div>
-        <h2>{post.title}</h2>
-        <div className="flex gap-16">
-          {post.timeToRead} {post.timeToRead == 1 ? 'minute' : 'minutes'} read
-        </div>
-        <div className="flex gap-16">
-          <span>
-            by{' '}
-            <Link to={`/authors/${post.author._id}`}>{post.author.handle}</Link>
-          </span>
-          <span>{post.commentsCount} comments</span>
+
+      <div className="flex flex-col gap-4">
+        <Typography type="title">{post.title}</Typography>
+        <div>
+          <Typography type="regular">by </Typography>
+          <Link to={`/authors/${post.author._id}`}>
+            <Typography type="linkLight">{post.author.handle} </Typography>
+          </Link>
         </div>
 
         {post.imageUrl && (
           <img
+            className="h-[28rem] w-full object-cover"
             src={`${import.meta.env.VITE_API_URL}${post.imageUrl}`}
             alt={post.title}
           />
         )}
-        <p className="whitespace-break-spaces">{post.content}</p>
+        <Typography type="contentFull">{post.content}</Typography>
 
         <CommentsSection postId={post._id} />
       </div>

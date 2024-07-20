@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import Typography from './Typography';
+import Loading from './Loading';
 
 function AddComment({ postId, updateList }) {
   const [loading, setLoading] = useState(false);
@@ -25,13 +27,13 @@ function AddComment({ postId, updateList }) {
 
     if (!validations(data)) {
       if (!data.author.length) {
-        setAuthorError('Author must contain at least 1 charcters');
+        setAuthorError('Author must contain at least 1 characters');
       }
       if (!data.content.length) {
-        setContentError('Content must contain at least 1 charcters');
+        setContentError('Content must contain at least 1 characters');
       }
 
-      setGeneralError('Errors have occured. Please fix and try again');
+      setGeneralError('Errors have occured, please fix and try again');
       setLoading(false);
       return;
     }
@@ -74,29 +76,69 @@ function AddComment({ postId, updateList }) {
 
   return (
     <div className="my-4">
-      <h3>Add a comment...</h3>
-      <form method="POST" onSubmit={handleSubmit}>
-        <div className="flex flex-col gap-2">
-          <label htmlFor="author">Name</label>
-          <input type="text" id="author" name="author" />
-          {authorError && <div className="text-red-600">{authorError}</div>}
-          <label htmlFor="content">Your Comment</label>
-          <textarea id="content" name="content"></textarea>
-          {contentError && <div className="text-red-600">{contentError}</div>}
+      <Typography type="smallTitle">Leave a Comment</Typography>
+      <form method="POST" onSubmit={handleSubmit} className="mt-3">
+        <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-2">
+            <label htmlFor="author">
+              <Typography type="smaller">Name</Typography>
+            </label>
+            <div className="flex rounded-md ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-gray-600 sm:max-w-sm">
+              <input
+                type="text"
+                id="author"
+                name="author"
+                className="flex-1 border-0 bg-transparent py-1.5 pl-3 text-gray-900 outline-none focus:ring-0 sm:leading-6"
+              />
+            </div>
+            {authorError && (
+              <div>
+                <Typography type="smaller" className="text-red-600">
+                  {authorError}
+                </Typography>
+              </div>
+            )}
+          </div>
+          <div className="flex flex-col gap-2">
+            <label htmlFor="content">
+              <Typography type="smaller">Your Comment</Typography>
+            </label>
+            <div className="flex rounded-md ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-gray-600 sm:max-w-xl">
+              <textarea
+                id="content"
+                name="content"
+                className="flex-1 border-0 bg-transparent py-1.5 pl-3 text-gray-900 outline-none focus:ring-0 sm:leading-6"></textarea>
+            </div>
+            {contentError && (
+              <div>
+                <Typography type="smaller" className="text-red-600">
+                  {contentError}
+                </Typography>
+              </div>
+            )}
+          </div>
           <input type="hidden" id="post" name="post" value={postId} />
-          <div>
-            <button
-              className="flex border-2 border-indigo-600"
-              type="submit"
-              disabled={loading}>
-              Send
-            </button>
+          <div className="flex flex-col gap-2 sm:max-w-xl">
+            <div className="flex items-center justify-between gap-2">
+              <button
+                className="bg-mantis-400 hover:bg-mantis-300 focus-visible:outline-mantis-400 text-md rounded-md px-6 py-2 font-bold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                type="submit"
+                disabled={loading}>
+                Send
+              </button>
+              <div>
+                {loading && <Loading />}
+                {success && (
+                  <Typography type="small">
+                    Your comment was successfully sent!
+                  </Typography>
+                )}
+              </div>
+            </div>
             <div className="min-h-8">
-              {loading && <h3>Sending...</h3>}
               {generalError && (
                 <div className="text-red-600">{generalError}</div>
               )}
-              {success && <div>Your comment was successfully sent!</div>}
             </div>
           </div>
         </div>
