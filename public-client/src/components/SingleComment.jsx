@@ -1,3 +1,4 @@
+import { format } from 'date-fns';
 import Typography from './Typography';
 
 function SingleComment({ comment = null }) {
@@ -7,9 +8,14 @@ function SingleComment({ comment = null }) {
 
   return (
     <div className="flex flex-col gap-4 pt-4">
-      <Typography type="smallerBold" className="whitespace-pre">
-        {comment.author}
-      </Typography>
+      <div className="flex justify-between">
+        <Typography type="smallerBold" className="whitespace-pre">
+          {comment.author}
+        </Typography>
+        <Typography type="smaller">
+          {format(comment.createdAt, "dd/MM/yyyy 'at' h:mma")}
+        </Typography>
+      </div>
       <Typography type="smaller">{comment.content}</Typography>
     </div>
   );

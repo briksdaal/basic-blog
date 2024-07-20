@@ -43,8 +43,15 @@ function Typography({ type, children, className = '' }) {
       );
     case 'small':
       return <span className={createClassString('text-lg')}>{children}</span>;
+    case 'smallerLight':
+      return (
+        <span className={createClassString('text-lg font-light')}>
+          {children}
+        </span>
+      );
     case 'smaller':
       return <span className={createClassString('text-base')}>{children}</span>;
+
     case 'smallerBold':
       return (
         <span className={createClassString('text-base font-bold')}>
