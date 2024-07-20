@@ -4,7 +4,6 @@ import HomePage from '../pages/home-page';
 import PostPage from '../pages/post-page';
 import AuthorPage from '../pages/author-page';
 import ErrorPage from '../pages/error-page';
-import ScrollToTop from '../components/ScrollToTop';
 
 const routes = [
   {
