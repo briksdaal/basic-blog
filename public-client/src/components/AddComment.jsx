@@ -121,13 +121,20 @@ function AddComment({ postId, updateList }) {
           <div className="flex flex-col gap-2 sm:max-w-xl">
             <div className="flex items-center justify-between gap-2">
               <button
-                className="bg-mantis-400 hover:bg-mantis-300 focus-visible:outline-mantis-400 text-md rounded-md px-6 py-2 font-bold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                className="bg-mantis-400 hover:bg-mantis-300 disabled:bg-mantis-300 focus-visible:outline-mantis-400 text-md rounded-md px-6 py-2 font-bold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
                 type="submit"
                 disabled={loading}>
                 Send
               </button>
               <div>
-                {loading && <Loading />}
+                {loading && (
+                  <div className="flex items-center gap-2">
+                    <div className="h-8 w-8">
+                      <Loading />
+                    </div>
+                    <Typography type="small">Sending...</Typography>
+                  </div>
+                )}
                 {success && (
                   <Typography type="small">
                     Your comment was successfully sent!
