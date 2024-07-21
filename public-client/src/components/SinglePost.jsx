@@ -39,7 +39,7 @@ function SinglePost({ data = null }) {
 
         {post.imageUrl && (
           <img
-            className="h-[28rem] w-full object-cover"
+            className="h-[18rem] w-full object-cover sm:h-[28rem]"
             src={`${import.meta.env.VITE_API_URL}${post.imageUrl}`}
             alt={post.title}
           />

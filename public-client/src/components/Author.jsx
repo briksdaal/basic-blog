@@ -17,7 +17,7 @@ function Author({ data = null }) {
       <Helmet>
         <title>JourneyJot - {author.fullname}</title>
       </Helmet>
-      <div className="flex flex-col md:flex-row">
+      <div className="flex flex-col gap-8 md:flex-row md:gap-0">
         <div className="flex flex-initial flex-col items-center md:flex-1">
           <div className="relative flex h-48 w-48 items-center justify-center overflow-hidden rounded-full ">
             <div className="absolute left-0 top-0 h-full w-full rounded-full border-2 border-slate-800"></div>
@@ -41,7 +41,7 @@ function Author({ data = null }) {
           </div>
         </div>
         <div className="flex-initial md:flex-[3_3_0%]">
-          <div className="px-14">
+          <div className="sm:px-14">
             <FetchWrapper
               Child={PostList}
               suffixUrl={`posts/?authorid=${author._id}`}

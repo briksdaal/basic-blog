@@ -11,7 +11,7 @@ function Typography({ type, children, className = '' }) {
   switch (type) {
     case 'title':
       return (
-        <h2 className={createClassString('text-4xl leading-snug')}>
+        <h2 className={createClassString('text-3xl leading-snug sm:text-4xl')}>
           {children}
         </h2>
       );
