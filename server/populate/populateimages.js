@@ -69,25 +69,25 @@ async function login() {
     password: process.env.ADMIN_PW,
   };
 
-  return postFetch('http://localhost:3000/auth', loginCreds).then(
+  return postFetch(`${process.env.API_URL}auth`, loginCreds).then(
     (data) => data.token
   );
 }
 
 async function getPostList() {
-  return getFetch('http://localhost:3000/posts').then((data) => data.posts);
+  return getFetch(`${process.env.API_URL}posts`).then((data) => data.posts);
 }
 
 async function getUserList() {
-  return getFetch('http://localhost:3000/users').then((data) => data.users);
+  return getFetch(`${process.env.API_URL}users`).then((data) => data.users);
 }
 
 function uploadPostImages(postsImagesPairs) {
   return Promise.all(
     postsImagesPairs.map((p) =>
       putImageFetch(
-        `http://localhost:3000/posts/${p[0]}`,
-        `./populateImages/places/${p[1]}`
+        `${process.env.API_URL}posts/${p[0]}`,
+        `./populate/populateImages/places/${p[1]}`
       )
     )
   );
@@ -97,8 +97,8 @@ function uploadUserImages(usersImagesPairs) {
   return Promise.all(
     usersImagesPairs.map((p) =>
       putImageFetch(
-        `http://localhost:3000/users/${p[0]}`,
-        `./populateImages/faces/${p[1]}`
+        `${process.env.API_URL}users/${p[0]}`,
+        `./populate/populateImages/faces/${p[1]}`
       )
     )
   );
