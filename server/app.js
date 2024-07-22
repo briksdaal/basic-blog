@@ -18,6 +18,7 @@ import authRouter from './routes/auth.js';
 import tokensRouter from './routes/tokens.js';
 import postsRouter from './routes/posts.js';
 import commentsRouter from './routes/comments.js';
+import uploadsRouter from './routes/uploads.js';
 
 const app = express();
 
@@ -39,6 +40,7 @@ app.use('/auth', authRouter);
 app.use('/tokens', tokensRouter);
 app.use('/posts', postsRouter);
 app.use('/comments', commentsRouter);
+app.use('/gridimages', uploadsRouter);
 
 // catch 404 and forward error
 app.use((req, res, next) => {

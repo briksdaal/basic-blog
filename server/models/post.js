@@ -20,6 +20,7 @@ const PostSchema = new Schema(
     published: { type: Boolean, required: true, default: true },
     commentsCount: { type: Number, required: true, default: 0 },
     image: { type: String },
+    gridfsImage: { type: Schema.Types.ObjectId, default: null },
   },
   {
     toJSON: {
@@ -38,7 +39,7 @@ PostSchema.virtual('timeToRead').get(function () {
 });
 
 PostSchema.virtual('imageUrl').get(function () {
-  return this.image && this.image.split('public/')[1];
+  return this.gridfsImage && `gridimages/${this.gridfsImage}`;
 });
 
 const PostModel = mongoose.model('Post', PostSchema);

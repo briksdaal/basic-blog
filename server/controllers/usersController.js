@@ -7,6 +7,10 @@ import Session from '../models/session.js';
 import { imageUploadAndValidation, deleteImage } from './helpers/image.js';
 import passport from 'passport';
 import db from '../config/mongoose.js';
+import {
+  addImageToGridFS,
+  removeImageFromGridFS,
+} from './helpers/gridfsPromises.js';
 
 /* Middleware for verifying user is admin or that the requested id is for the same user in the jwt */
 function verifyUser(req, res, next) {
@@ -101,7 +105,18 @@ export const register_user_post = [
       image: req.file?.path || null,
       admin,
     });
+
+    try {
+      const gridObj = await addImageToGridFS(req.file);
+      newUser.gridfsImage = gridObj.id;
+    } catch (err) {
+      return res.status(500).json({
+        errors: [err],
+      });
+    }
+
     await newUser.save();
+
     res.json({
       success: true,
       message: `New user ${email} saved`,
@@ -206,13 +221,24 @@ export const update_user_put = [
 
     // update image if existing
     if (req.file) {
+      try {
+        await removeImageFromGridFS(user.gridfsImage);
+        const gridObj = await addImageToGridFS(req.file);
+        user.gridfsImage = gridObj.id;
+      } catch (err) {
+        return res.status(500).json({
+          errors: [err],
+        });
+      }
       deleteImage(user.image);
       user.image = req.file.path;
     }
     // if no image file but empty image string remove current image
     else if (req.body.image === '') {
       deleteImage(user.image);
+      removeImageFromGridFS(user.gridfsImage);
       user.image = null;
+      user.gridfsImage = null;
     }
 
     await user.save();
@@ -263,6 +289,9 @@ export const user_delete = [
     // end session
 
     deleteImage(user.image);
+    await removeImageFromGridFS(user.gridfsImage);
+    user.image = null;
+    user.gridfsImage = null;
 
     res.json({
       success: true,

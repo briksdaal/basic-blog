@@ -6,6 +6,8 @@ main();
 
 var token = '';
 
+var api_url;
+
 async function postFetch(url, body, withAuth = true) {
   const headers = withAuth
     ? {
@@ -54,6 +56,11 @@ async function putImageFetch(url, imagePath, withAuth = true) {
 }
 
 async function main() {
+  api_url =
+    process.env.NODE_ENV === 'dev'
+      ? 'http://localhost:3000/'
+      : process.env.API_URL;
+
   token = await login();
   const posts = await getPostList();
   const users = await getUserList();
@@ -69,24 +76,22 @@ async function login() {
     password: process.env.ADMIN_PW,
   };
 
-  return postFetch(`${process.env.API_URL}auth`, loginCreds).then(
-    (data) => data.token
-  );
+  return postFetch(`${api_url}auth`, loginCreds).then((data) => data.token);
 }
 
 async function getPostList() {
-  return getFetch(`${process.env.API_URL}posts`).then((data) => data.posts);
+  return getFetch(`${api_url}posts`).then((data) => data.posts);
 }
 
 async function getUserList() {
-  return getFetch(`${process.env.API_URL}users`).then((data) => data.users);
+  return getFetch(`${api_url}users`).then((data) => data.users);
 }
 
 function uploadPostImages(postsImagesPairs) {
   return Promise.all(
     postsImagesPairs.map((p) =>
       putImageFetch(
-        `${process.env.API_URL}posts/${p[0]}`,
+        `${api_url}posts/${p[0]}`,
         `./populate/populateImages/places/${p[1]}`
       )
     )
@@ -97,7 +102,7 @@ function uploadUserImages(usersImagesPairs) {
   return Promise.all(
     usersImagesPairs.map((p) =>
       putImageFetch(
-        `${process.env.API_URL}users/${p[0]}`,
+        `${api_url}users/${p[0]}`,
         `./populate/populateImages/faces/${p[1]}`
       )
     )

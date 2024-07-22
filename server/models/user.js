@@ -11,6 +11,7 @@ const UserSchema = new Schema(
     handle: { type: String, required: true },
     password: { type: String, required: true },
     image: { type: String },
+    gridfsImage: { type: Schema.Types.ObjectId, default: null },
     admin: { type: Boolean, required: true, default: false },
   },
   {
@@ -35,7 +36,7 @@ UserSchema.virtual('fullname').get(function () {
 });
 
 UserSchema.virtual('imageUrl').get(function () {
-  return this.image && this.image.split('public/')[1];
+  return this.gridfsImage && `gridimages/${this.gridfsImage}`;
 });
 
 const UserModel = mongoose.model('User', UserSchema);

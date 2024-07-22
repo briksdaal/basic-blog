@@ -4,10 +4,15 @@ import Post from '../models/post.js';
 import User from '../models/user.js';
 import Comment from '../models/comment.js';
 import { imageUploadAndValidation, deleteImage } from './helpers/image.js';
-
+import { bucket } from '../config/mongoose.js';
+import { createReadStream } from 'fs';
 import passport from 'passport';
 import { ObjectIdIsValid } from '../config/mongoose.js';
 import db from '../config/mongoose.js';
+import {
+  addImageToGridFS,
+  removeImageFromGridFS,
+} from './helpers/gridfsPromises.js';
 
 /* Return list of all posts on GET */
 export const post_list = [
@@ -96,6 +101,15 @@ export const post_create = [
       published: req.body.published,
       image: req.file?.path || null,
     });
+
+    try {
+      const gridObj = await addImageToGridFS(req.file);
+      post.gridfsImage = gridObj.id;
+    } catch (err) {
+      return res.status(500).json({
+        errors: [err],
+      });
+    }
 
     await post.save();
 
@@ -219,13 +233,24 @@ export const post_update = [
 
     // update image if existing
     if (req.file) {
+      try {
+        await removeImageFromGridFS(post.gridfsImage);
+        const gridObj = await addImageToGridFS(req.file);
+        post.gridfsImage = gridObj.id;
+      } catch (err) {
+        return res.status(500).json({
+          errors: [err],
+        });
+      }
       deleteImage(post.image);
       post.image = req.file.path;
     }
     // if no image file but empty image string remove current image
     else if (req.body.image === '') {
       deleteImage(post.image);
+      removeImageFromGridFS(post.gridfsImage);
       post.image = null;
+      post.gridfsImage = null;
     }
 
     // update editedAt if it isn't in req body
@@ -276,6 +301,9 @@ export const post_delete = [
     }
 
     deleteImage(post.image);
+    await removeImageFromGridFS(post.gridfsImage);
+    post.image = null;
+    post.gridfsImage = null;
 
     res.json({
       success: true,
