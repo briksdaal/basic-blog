@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Typography from './Typography';
+import useLogin from '../hooks/useLogin';
 
 function Input({ type, id, label }) {
   return (
@@ -21,53 +22,28 @@ function Input({ type, id, label }) {
   );
 }
 
-function LoginForm() {
-  const [loading, setLoading] = useState(false);
-  const [errorMsg, setErrorMsg] = useState('');
-  const [success, setSuccess] = useState(false);
+const inputs = [
+  {
+    type: 'email',
+    id: 'email',
+    label: 'Email:'
+  },
+  {
+    type: 'password',
+    id: 'password',
+    label: 'Password:'
+  }
+];
 
-  const inputs = [
-    {
-      type: 'email',
-      id: 'email',
-      label: 'Email:'
-    },
-    {
-      type: 'password',
-      id: 'password',
-      label: 'Password:'
-    }
-  ];
+function LoginForm() {
+  const [login, loading, errorMsg, success] = useLogin();
 
   function handleSubmit(e) {
     e.preventDefault();
 
-    setErrorMsg('');
-    setSuccess(false);
-    setLoading(true);
     const data = Object.fromEntries(new FormData(e.target));
 
-    fetch(`${import.meta.env.VITE_API_URL}/auth`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
-    })
-      .then(async (res) => {
-        if (res.status > 200) {
-          const json = await res.json();
-          throw new Error(json.errors[0].msg);
-        }
-        return res.json();
-      })
-      .then((data) => {
-        setSuccess(true);
-
-        console.log(data);
-      })
-      .catch((err) => {
-        setErrorMsg(err.message);
-      })
-      .finally(() => setLoading(false));
+    login(data);
   }
 
   return (
