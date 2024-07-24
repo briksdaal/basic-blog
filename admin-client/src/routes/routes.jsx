@@ -1,7 +1,7 @@
 import App from '../App';
-import HomePage from '../pages/home-page';
+import LoginPage from '../pages/login-page';
 import ErrorPage from '../pages/error-page';
-import Dashboard from '../pages/dashboard-page';
+import DashboardPage from '../pages/dashboard-page';
 import ProtectedAccess from '../components/AuthComps/ProtectedAccess';
 
 const routes = [
@@ -10,19 +10,19 @@ const routes = [
     element: <App />,
     children: [
       {
-        index: true,
-        element: <HomePage />
-      },
-      {
+        path: '/',
         element: <ProtectedAccess />,
         children: [
           {
             path: '/dashboard',
-            element: <Dashboard />
+            element: <DashboardPage />
           }
         ]
       },
-
+      {
+        path: '/login',
+        element: <LoginPage />
+      },
       {
         path: '*',
         element: <ErrorPage />

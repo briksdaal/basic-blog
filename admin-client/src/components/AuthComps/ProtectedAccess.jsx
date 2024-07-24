@@ -5,14 +5,7 @@ import { Navigate } from 'react-router-dom';
 function ProtectedAccess() {
   const { auth } = useAuth();
 
-  return auth.user ? (
-    <>
-      <p>protected</p>
-      <Outlet />
-    </>
-  ) : (
-    <Navigate to="/" />
-  );
+  return auth.user ? <Outlet /> : <Navigate to="/login" />;
 }
 
 export default ProtectedAccess;
