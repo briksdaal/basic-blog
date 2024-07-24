@@ -1,11 +1,13 @@
 import { useState } from 'react';
+import useAuth from './useAuth';
 
 function useLogin() {
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [success, setSuccess] = useState(false);
+  const { setAuth } = useAuth();
 
-  function login(data) {
+  function login(formData) {
     setLoading(true);
     setErrorMsg('');
     setSuccess(false);
@@ -13,7 +15,8 @@ function useLogin() {
     fetch(`${import.meta.env.VITE_API_URL}/auth`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
+      credentials: 'include',
+      body: JSON.stringify(formData)
     })
       .then(async (res) => {
         if (res.status > 200) {
@@ -24,8 +27,7 @@ function useLogin() {
       })
       .then((data) => {
         setSuccess(true);
-
-        console.log(data);
+        setAuth({ user: formData.email, token: data.token });
       })
       .catch((err) => {
         setErrorMsg(err.message);
