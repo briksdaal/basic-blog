@@ -25,7 +25,12 @@ const app = express();
 passport.use(jwtStrategy);
 passport.use(anonymousStrategy);
 
-app.use(cors());
+app.use(
+  cors({
+    origin: true,
+    credentials: true,
+  })
+);
 
 app.use(passport.initialize());
 

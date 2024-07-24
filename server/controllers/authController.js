@@ -63,7 +63,7 @@ export const login_user_post = [
     ).exec();
 
     const cookieOptions = {
-      sameSite: 'none',
+      sameSite: 'Strict',
       maxAge: 1000 * 60 * 60 * 24, // 1d
       httpOnly: true,
       secure: true,
@@ -85,7 +85,7 @@ export const logout_user_delete = [
     await Session.findOneAndDelete({ user: req.user.email });
 
     const cookieOptions = {
-      sameSite: 'none',
+      sameSite: 'Strict',
       maxAge: 1000 * 60 * 60 * 24, // 1d
       httpOnly: true,
       secure: true,
