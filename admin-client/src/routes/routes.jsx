@@ -1,6 +1,7 @@
 import App from '../App';
 import HomePage from '../pages/home-page';
 import ErrorPage from '../pages/error-page';
+import Dashboard from '../pages/dashboard-page';
 
 const routes = [
   {
@@ -10,6 +11,10 @@ const routes = [
       {
         index: true,
         element: <HomePage />
+      },
+      {
+        path: '/dashboard',
+        element: <Dashboard />
       },
       {
         path: '*',

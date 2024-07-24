@@ -27,7 +27,9 @@ function useLogin() {
       })
       .then((data) => {
         setSuccess(true);
-        setAuth({ user: formData.email, token: data.token });
+        setTimeout(() => {
+          setAuth({ user: formData.email, token: data.token });
+        }, 1000);
       })
       .catch((err) => {
         setErrorMsg(err.message);

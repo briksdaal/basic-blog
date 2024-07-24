@@ -1,5 +1,7 @@
 import Typography from './Typography';
 import useLogin from '../hooks/useLogin.jsx';
+import { Navigate } from 'react-router-dom';
+import useAuth from '../hooks/useAuth.jsx';
 
 function Input({ type, id, label }) {
   return (
@@ -36,6 +38,9 @@ const inputs = [
 
 function LoginForm() {
   const [login, loading, errorMsg, success] = useLogin();
+  const { auth } = useAuth();
+
+  if (auth?.user) return <Navigate to="/dashboard" replace={true} />;
 
   function handleSubmit(e) {
     e.preventDefault();
