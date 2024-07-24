@@ -1,8 +1,11 @@
 import PropTypes from 'prop-types';
 import Header from './header';
 import Footer from './footer';
+import useAuth from '../hooks/useAuth';
 
 function Layout({ children }) {
+  const { auth } = useAuth();
+  console.log(auth);
   return (
     <div className="flex min-h-dvh flex-col">
       <Header />
