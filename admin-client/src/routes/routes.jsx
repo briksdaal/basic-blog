@@ -2,6 +2,7 @@ import App from '../App';
 import HomePage from '../pages/home-page';
 import ErrorPage from '../pages/error-page';
 import Dashboard from '../pages/dashboard-page';
+import ProtectedAccess from '../components/AuthComps/ProtectedAccess';
 
 const routes = [
   {
@@ -13,9 +14,15 @@ const routes = [
         element: <HomePage />
       },
       {
-        path: '/dashboard',
-        element: <Dashboard />
+        element: <ProtectedAccess />,
+        children: [
+          {
+            path: '/dashboard',
+            element: <Dashboard />
+          }
+        ]
       },
+
       {
         path: '*',
         element: <ErrorPage />
