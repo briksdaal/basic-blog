@@ -28,7 +28,11 @@ function useLogin() {
       .then((data) => {
         setSuccess(true);
         setTimeout(() => {
-          setAuth({ user: formData.email, token: data.token });
+          setAuth({
+            user: formData.email,
+            token: data.token,
+            admin: data.admin
+          });
         }, 1000);
       })
       .catch((err) => {

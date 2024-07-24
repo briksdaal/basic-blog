@@ -70,6 +70,12 @@ function Typography({ type, children, className = '' }) {
           {children}
         </span>
       );
+    case 'link':
+      return (
+        <span className={createClassString('text-xl text-sky-500')}>
+          {children}
+        </span>
+      );
     default:
       return <p className={createClassString('text-xl')}>{children}</p>;
   }
