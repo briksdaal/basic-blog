@@ -7,7 +7,6 @@ function useLogout() {
     fetch(`${import.meta.env.VITE_API_URL}/auth`, {
       method: 'DELETE',
       headers: {
-        'Content-Type': 'application/json',
         Authorization: `Bearer ${auth.token}`
       },
       credentials: 'include'
