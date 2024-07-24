@@ -1,5 +1,5 @@
-import Typography from './Typography';
-import useLogout from '../hooks/useLogout';
+import Typography from '../General/Typography';
+import useLogout from '../../hooks/useLogout';
 
 function Logout() {
   const logout = useLogout();

@@ -1,4 +1,4 @@
-import Typography from './Typography';
+import Typography from './General/Typography';
 import useLogin from '../hooks/useLogin.jsx';
 import { Navigate } from 'react-router-dom';
 import useAuth from '../hooks/useAuth.jsx';
@@ -64,7 +64,7 @@ function LoginForm() {
             <button
               type="submit"
               disabled={loading}
-              className="bg-mantis-400 hover:bg-mantis-300 disabled:bg-mantis-300 focus-visible:outline-mantis-400 text-md rounded-md px-6 py-2 font-bold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2">
+              className="text-md rounded-md bg-mantis-400 px-6 py-2 font-bold text-white shadow-sm hover:bg-mantis-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-mantis-400 disabled:bg-mantis-300">
               Login
             </button>
           </div>

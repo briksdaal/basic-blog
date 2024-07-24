@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
-import Logo from '../components/Logo';
+import Logo from '../components/Header/Logo';
 import { useEffect, useState } from 'react';
-import Typography from '../components/Typography';
-import HeaderUserArea from '../components/HeaderUserArea';
+import Typography from '../components/General/Typography';
+import HeaderUserArea from '../components/Header/HeaderUserArea';
 import useAuth from '../hooks/useAuth';
 
 function Header() {
