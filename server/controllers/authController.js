@@ -75,6 +75,7 @@ export const login_user_post = [
       success: true,
       message: `User ${email} logged in`,
       token: accessToken,
+      admin: foundUser.admin,
     });
   }),
 ];
