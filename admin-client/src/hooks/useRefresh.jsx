@@ -18,10 +18,10 @@ function useRefresh() {
       .then((data) => {
         setAuth((auth) => {
           return {
+            ...auth,
             user: data.user,
             token: data.token,
-            admin: data.admin,
-            ...auth
+            admin: data.admin
           };
         });
         return data.token;
