@@ -11,9 +11,7 @@ function useLogout() {
       },
       credentials: 'include'
     }).then(async (res) => {
-      if (res.status === 204) {
-        setAuth({});
-      }
+      setAuth({});
     });
   }
 
