@@ -12,11 +12,13 @@ export const refresh_token_post = asyncHandler(async function (req, res) {
   }).exec();
 
   if (activeSession && Date.now() < activeSession.expiry) {
-    const accessToken = createAccessToken(payload.sub);
+    const accessToken = createAccessToken(payload.sub, payload.admin);
     return res.json({
       success: true,
       message: `Access for user ${payload.sub} refreshed`,
       token: accessToken,
+      user: payload.sub,
+      admin: payload.admin,
     });
   }
 
