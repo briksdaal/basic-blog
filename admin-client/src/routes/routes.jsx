@@ -5,6 +5,7 @@ import DashboardPage from '../pages/dashboard-page';
 import UsersPage from '../pages/users-page';
 import UnauthorizedPage from '../pages/unauthorized-page';
 import ProtectedAccess from '../components/AuthComps/ProtectedAccess';
+import PersistentLogin from '../components/AuthComps/PersistentLogin';
 import { Navigate } from 'react-router-dom';
 
 const routes = [
@@ -14,33 +15,40 @@ const routes = [
     children: [
       {
         path: '/',
-        element: <ProtectedAccess />,
+        element: <PersistentLogin />,
         children: [
-          { index: true, element: <Navigate to="/dashboard" /> },
           {
-            path: '/dashboard',
-            element: <DashboardPage />
-          },
-          {
-            path: '/users',
-            element: <ProtectedAccess adminOnly={true} />,
+            path: '/',
+            element: <ProtectedAccess />,
             children: [
+              { index: true, element: <Navigate to="/dashboard" /> },
               {
-                index: true,
-                element: <UsersPage />
+                path: '/dashboard',
+                element: <DashboardPage />
+              },
+              {
+                path: '/users',
+                element: <ProtectedAccess adminOnly={true} />,
+                children: [
+                  {
+                    index: true,
+                    element: <UsersPage />
+                  }
+                ]
+              },
+              {
+                path: '/unauthorized',
+                element: <UnauthorizedPage />
               }
             ]
           },
           {
-            path: '/unauthorized',
-            element: <UnauthorizedPage />
+            path: '/login',
+            element: <LoginPage />
           }
         ]
       },
-      {
-        path: '/login',
-        element: <LoginPage />
-      },
+
       {
         path: '*',
         element: <ErrorPage />

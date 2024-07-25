@@ -17,7 +17,6 @@ function useRefresh() {
       })
       .then((data) => {
         setAuth((auth) => {
-          console.log(auth);
           return {
             user: data.user,
             token: data.token,
