@@ -16,7 +16,15 @@ function useRefresh() {
         return res.json();
       })
       .then((data) => {
-        setAuth((auth) => ({ ...auth, token: data.token }));
+        setAuth((auth) => {
+          console.log(auth);
+          return {
+            user: data.user,
+            token: data.token,
+            admin: data.admin,
+            ...auth
+          };
+        });
         return data.token;
       })
       .catch((err) => null);
