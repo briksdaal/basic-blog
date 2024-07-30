@@ -2,6 +2,8 @@ import App from '../App';
 import LoginPage from '../pages/login-page';
 import ErrorPage from '../pages/error-page';
 import DashboardPage from '../pages/dashboard-page';
+import PostsPage from '../pages/posts-page';
+import CommentsPage from '../pages/comments-page';
 import UsersPage from '../pages/users-page';
 import UnauthorizedPage from '../pages/unauthorized-page';
 import ProtectedAccess from '../components/AuthComps/ProtectedAccess';
@@ -25,6 +27,14 @@ const routes = [
               {
                 path: '/dashboard',
                 element: <DashboardPage />
+              },
+              {
+                path: '/posts',
+                element: <PostsPage />
+              },
+              {
+                path: '/comments',
+                element: <CommentsPage />
               },
               {
                 path: '/users',

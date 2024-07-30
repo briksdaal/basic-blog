@@ -4,10 +4,22 @@ import Typography from '../components/General/Typography';
 function DashboardView() {
   return (
     <div>
-      <Typography>This is the protected dashboard for all users</Typography>
-      <Link to="/users">
-        <Typography type="link">Users</Typography>
-      </Link>
+      <Typography>JourneyJot Blog Management</Typography>
+      <div>
+        <Link to="/posts">
+          <Typography type="link">Posts</Typography>
+        </Link>
+      </div>
+      <div>
+        <Link to="/comments">
+          <Typography type="link">Comments</Typography>
+        </Link>
+      </div>
+      <div>
+        <Link to="/users">
+          <Typography type="link">Users</Typography>
+        </Link>
+      </div>
     </div>
   );
 }
