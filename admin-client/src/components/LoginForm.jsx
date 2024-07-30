@@ -1,6 +1,6 @@
 import Typography from './General/Typography';
 import useLogin from '../hooks/useLogin.jsx';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import useAuth from '../hooks/useAuth.jsx';
 
 function Input({ type, id, label }) {
@@ -39,8 +39,11 @@ const inputs = [
 function LoginForm() {
   const [login, loading, errorMsg, success] = useLogin();
   const { auth } = useAuth();
+  const location = useLocation();
 
-  if (auth?.user) return <Navigate to="/dashboard" replace={true} />;
+  const from = location.state?.from?.pathname || '/';
+
+  if (auth?.user) return <Navigate to={from} replace={true} />;
 
   function handleSubmit(e) {
     e.preventDefault();
