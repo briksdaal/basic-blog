@@ -129,8 +129,11 @@ export const user_detail = [
   passport.authenticate(['jwt', 'anonymous'], { session: false }),
   asyncHandler(async function (req, res) {
     let user;
+
+    const projections = req.user ? { password: 0 } : { password: 0, admin: 0 };
+
     try {
-      user = await User.findById(req.params.id, { password: 0 }).exec();
+      user = await User.findById(req.params.id, projections).exec();
     } catch (err) {
       user = null;
     }
