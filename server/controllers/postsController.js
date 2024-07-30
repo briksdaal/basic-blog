@@ -92,6 +92,12 @@ export const post_create = [
       });
     }
 
+    if (!req.user.admin && !req.user._id.equals(req.body.author)) {
+      return res.status(403).json({
+        errors: ['Only admin can post for other authors'],
+      });
+    }
+
     const post = new Post({
       author: req.body.author,
       title: req.body.title,
@@ -212,6 +218,12 @@ export const post_update = [
       });
     }
 
+    if (req.body.author && !req.user.admin) {
+      return res.status(403).json({
+        errors: ['Only admin can update author field'],
+      });
+    }
+
     let post;
     try {
       post = await Post.findById(req.params.id).exec();
@@ -276,6 +288,20 @@ export const post_delete = [
   passport.authenticate('jwt', { session: false }),
   asyncHandler(async function (req, res) {
     let post;
+
+    post = await Post.findById(req.params.id);
+
+    if (!post) {
+      return res.status(404).json({
+        error: 'Post not found',
+      });
+    }
+
+    if (!req.user.admin && !req.user._id.equals(post.author._id)) {
+      return res.status(403).json({
+        errors: ['Only admin can delete posts by other authors'],
+      });
+    }
 
     // start a session transaction to delete post and all its comments
     const session = await db.startSession();
