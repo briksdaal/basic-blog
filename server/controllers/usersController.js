@@ -36,7 +36,7 @@ export const user_list = [
   passport.authenticate('jwt', { session: false }),
   asyncHandler(async function (req, res) {
     const allUsers = await User.find({}, { password: 0 })
-      .sort({ createdAt: -1 })
+      .sort({ firstname: 1 })
       .exec();
 
     res.json({
