@@ -23,7 +23,8 @@ export const refresh_token_post = asyncHandler(async function (req, res) {
   }
 
   const cookieOptions = {
-    sameSite: 'Strict',
+    sameSite: 'None',
+    secure: true,
     maxAge: 1000 * 60 * 60 * 24, // 1d
     httpOnly: true,
     secure: true,
