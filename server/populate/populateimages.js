@@ -37,7 +37,7 @@ async function getFetch(url, withAuth = true) {
   }).then((res) => res.json());
 }
 
-async function putImageFetch(url, imagePath, withAuth = true) {
+async function putImageFetch(url, imagePath, admin = false, withAuth = true) {
   const headers = withAuth
     ? {
         Authorization: `Bearer ${token}`,
@@ -47,7 +47,7 @@ async function putImageFetch(url, imagePath, withAuth = true) {
   const body = new FormData();
   const blob = new Blob([await readFile(imagePath)]);
   body.set('image', blob, imagePath);
-  body.set('admin', true);
+  body.set('admin', admin);
   return fetch(url, {
     method: 'PUT',
     headers,
@@ -60,7 +60,6 @@ async function main() {
     process.env.NODE_ENV === 'dev'
       ? 'http://localhost:3000/'
       : process.env.API_URL;
-
   token = await login();
   const posts = await getPostList();
   const users = await getUserList();
@@ -103,7 +102,8 @@ function uploadUserImages(usersImagesPairs) {
     usersImagesPairs.map((p) =>
       putImageFetch(
         `${api_url}users/${p[0]}`,
-        `./populate/populateImages/faces/${p[1]}`
+        `./populate/populateImages/faces/${p[1]}`,
+        p[2]
       )
     )
   );
@@ -131,16 +131,21 @@ function getPostPairs(posts) {
 function getUserPairs(users) {
   return users.map((u) => {
     let imagePath = '';
+    let admin = '';
     if (u.handle === 'amandasmith') {
       imagePath = 'face_2.jpeg';
+      admin = true;
     } else if (u.handle === 'ab') {
       imagePath = 'face_4.jpeg';
+      admin = true;
     } else if (u.handle === 'alicej') {
       imagePath = 'face_1.jpeg';
+      admin = false;
     } else if (u.handle === 'charlieb') {
       imagePath = 'face_3.jpeg';
+      admin = false;
     }
 
-    return [u._id, imagePath];
+    return [u._id, imagePath, admin];
   });
 }
