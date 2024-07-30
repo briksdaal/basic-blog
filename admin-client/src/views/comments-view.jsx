@@ -1,9 +1,10 @@
-import Typography from '../components/General/Typography';
+import FetchWrapper from '../components/FetchWrapper';
+import CommentsTable from '../components/Tables/CommentsTable';
 
 function CommentsView() {
   return (
     <div>
-      <Typography>Comments View</Typography>
+      <FetchWrapper Child={CommentsTable} suffixUrl={'/comments'} />
     </div>
   );
 }

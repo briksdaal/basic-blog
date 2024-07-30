@@ -1,5 +1,12 @@
+import FetchWrapper from '../components/FetchWrapper';
+import UsersTable from '../components/Tables/UsersTable';
+
 function UsersView() {
-  return 'This is the admin only protected users';
+  return (
+    <div>
+      <FetchWrapper Child={UsersTable} suffixUrl={'/users'} />
+    </div>
+  );
 }
 
 export default UsersView;

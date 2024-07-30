@@ -1,9 +1,10 @@
-import Typography from '../components/General/Typography';
+import FetchWrapper from '../components/FetchWrapper';
+import PostsTable from '../components/Tables/PostsTable';
 
 function PostsView() {
   return (
     <div>
-      <Typography>Posts View</Typography>
+      <FetchWrapper Child={PostsTable} suffixUrl={'/posts'} />
     </div>
   );
 }
