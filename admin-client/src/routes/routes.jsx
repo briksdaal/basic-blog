@@ -8,7 +8,9 @@ import UsersPage from '../pages/users-page';
 import UnauthorizedPage from '../pages/unauthorized-page';
 import ProtectedAccess from '../components/AuthComps/ProtectedAccess';
 import PersistentLogin from '../components/AuthComps/PersistentLogin';
+import LoggedInNavigate from '../components/AuthComps/LoggedInNavigate';
 import { Navigate } from 'react-router-dom';
+import { element } from 'prop-types';
 
 const routes = [
   {
@@ -54,11 +56,16 @@ const routes = [
           },
           {
             path: '/login',
-            element: <LoginPage />
+            element: <LoggedInNavigate />,
+            children: [
+              {
+                index: true,
+                element: <LoginPage />
+              }
+            ]
           }
         ]
       },
-
       {
         path: '*',
         element: <ErrorPage />
