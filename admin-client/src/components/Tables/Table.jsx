@@ -1,19 +1,19 @@
 import { Link } from 'react-router-dom';
+import Typography from '../General/Typography';
 
 function Table({ data, columns, route, header = true }) {
-  const cellClassList = 'pr-8';
+  const cellClassList = 'px-4 py-1 border-solid border-y border-slate-300';
 
   return (
     <table className="w-full text-left">
       {header && (
         <thead>
-          <tr>
+          <tr className="bg-mantis-100">
             {columns.map((c) => (
-              <th
-                key={c.title}
-                scope="col"
-                className={`${cellClassList} ${c.className}`}>
-                {c.title}
+              <th key={c.title} scope="col" className={cellClassList}>
+                <div className={c.className}>
+                  <Typography type="smaller">{c.title}</Typography>
+                </div>
               </th>
             ))}
           </tr>
@@ -21,22 +21,27 @@ function Table({ data, columns, route, header = true }) {
       )}
       <tbody>
         {data.map((d) => (
-          <tr key={d._id}>
+          <tr key={d._id} className="even:bg-mantis-100">
             {columns.map((c, i) => {
               if (i == 0) {
                 return (
-                  <th
-                    key={c.field}
-                    scope="row"
-                    className={`${cellClassList} ${c.className}`}>
-                    <Link to={`${route}/${d._id}`}>{d[c.field]}</Link>
+                  <th key={c.field} scope="row" className={cellClassList}>
+                    <div className={c.className}>
+                      <Link to={`${route}/${d._id}`}>
+                        <Typography type="smallerLink">{d[c.field]}</Typography>
+                      </Link>
+                    </div>
                   </th>
                 );
               }
 
               return (
-                <td key={c.field} className={`${cellClassList} ${c.className}`}>
-                  {c.fn ? c.fn(d) : d[c.field]}
+                <td key={c.field} className={cellClassList}>
+                  <div className={c.className}>
+                    <Typography type={c.typographyType || 'smaller'}>
+                      {c.fn ? c.fn(d) : d[c.field]}
+                    </Typography>
+                  </div>
                 </td>
               );
             })}

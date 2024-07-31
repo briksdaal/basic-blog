@@ -1,12 +1,8 @@
-import Typography from '../General/Typography';
-import { format } from 'date-fns';
 import Table from './Table';
 
 function UsersTable({ data }) {
-  console.log(data);
   return (
     <div>
-      <Typography>Users</Typography>
       <Table
         data={data.users}
         columns={[

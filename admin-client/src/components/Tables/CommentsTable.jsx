@@ -1,11 +1,9 @@
-import Typography from '../General/Typography';
 import Table from './Table';
 import { formatDate } from '../../helpers/formatDate';
 
 function CommentsTable({ data }) {
   return (
     <div>
-      <Typography>Comments</Typography>
       <Table
         data={data.comments}
         columns={[

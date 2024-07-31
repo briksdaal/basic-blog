@@ -1,4 +1,3 @@
-import Typography from '../General/Typography';
 import Table from './Table';
 import { formatDate } from '../../helpers/formatDate';
 import { Link } from 'react-router-dom';
@@ -6,7 +5,6 @@ import { Link } from 'react-router-dom';
 function PostsTable({ data }) {
   return (
     <div>
-      <Typography>Posts</Typography>
       <Table
         data={data.posts}
         columns={[
@@ -19,7 +17,8 @@ function PostsTable({ data }) {
             field: 'author',
             fn: (v) => (
               <Link to={`/users/${v.author._id}`}>{v.author.handle}</Link>
-            )
+            ),
+            typographyType: 'smallerLink'
           },
           {
             title: 'Date',

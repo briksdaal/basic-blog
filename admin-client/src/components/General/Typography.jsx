@@ -60,19 +60,25 @@ function Typography({ type, children, className = '' }) {
       );
     case 'linkLight':
       return (
-        <span className={createClassString('text-xl font-light text-sky-500')}>
+        <span className={createClassString('text-xl font-light text-sky-800')}>
           {children}
         </span>
       );
     case 'smallLink':
       return (
-        <span className={createClassString('text-lg text-sky-500')}>
+        <span className={createClassString('text-lg text-sky-800')}>
+          {children}
+        </span>
+      );
+    case 'smallerLink':
+      return (
+        <span className={createClassString('text-base text-sky-800')}>
           {children}
         </span>
       );
     case 'link':
       return (
-        <span className={createClassString('text-xl text-sky-500')}>
+        <span className={createClassString('text-xl text-sky-800')}>
           {children}
         </span>
       );
