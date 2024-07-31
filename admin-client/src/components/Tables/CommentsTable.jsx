@@ -16,7 +16,7 @@ function CommentsTable({ data }) {
           {
             title: 'Content',
             field: 'content',
-            className: 'w-96 line-clamp-1 overflow-hidden text-ellipsis'
+            className: 'max-w-96 line-clamp-1 overflow-hidden text-ellipsis'
           },
           {
             title: 'Date',

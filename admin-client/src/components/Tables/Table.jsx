@@ -4,7 +4,7 @@ function Table({ data, columns, route, header = true }) {
   const cellClassList = 'pr-8';
 
   return (
-    <table className="text-left">
+    <table className="w-full text-left">
       {header && (
         <thead>
           <tr>
