@@ -6,12 +6,12 @@ function DashboardView() {
   const { auth } = useAuth();
 
   const types = [
-    { type: 'Posts', link: '/posts' },
-    { type: 'Comments', link: '/comments' }
+    { _id: 1, type: 'Posts', link: '/posts' },
+    { _id: 2, type: 'Comments', link: '/comments' }
   ];
 
   if (auth?.admin) {
-    types.push({ type: 'Users', link: '/users' });
+    types.push({ _id: 3, type: 'Users', link: '/users' });
   }
 
   return (
