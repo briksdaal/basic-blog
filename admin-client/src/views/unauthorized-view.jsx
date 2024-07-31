@@ -1,15 +1,11 @@
-import { Link, useNavigate } from 'react-router-dom';
-import Typography from '../components/General/Typography';
+import PageTitle from '../components/General/PageTitle';
+import GoBack from '../components/General/GoBack';
 
 function UnauthorizedView() {
-  const Navigate = useNavigate();
-
   return (
     <div>
-      <Typography>You're not authorized to view this page</Typography>
-      <Link to="/">
-        <Typography type="link">Go back to dashboard</Typography>
-      </Link>
+      <PageTitle>You're not authorized to view this page</PageTitle>
+      <GoBack />
     </div>
   );
 }
