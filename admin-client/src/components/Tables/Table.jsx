@@ -27,9 +27,11 @@ function Table({ data, columns, route, header = true }) {
                 return (
                   <th key={c.field} scope="row" className={cellClassList}>
                     <div className={c.className}>
-                      <Link to={`${route}/${d._id}`}>
-                        <Typography type="smallerLink">{d[c.field]}</Typography>
-                      </Link>
+                      <Typography type="smallerLink">
+                        <Link to={d.link || `${route}/${d._id}`}>
+                          {d[c.field]}{' '}
+                        </Link>
+                      </Typography>
                     </div>
                   </th>
                 );

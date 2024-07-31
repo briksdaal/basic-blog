@@ -1,30 +1,33 @@
 import useAuth from '../hooks/useAuth';
-import { Link } from 'react-router-dom';
-import Typography from '../components/General/Typography';
 import PageTitle from '../components/General/PageTitle';
+import Table from '../components/Tables/Table';
 
 function DashboardView() {
   const { auth } = useAuth();
+
+  const types = [
+    { type: 'Posts', link: '/posts' },
+    { type: 'Comments', link: '/comments' }
+  ];
+
+  if (auth?.admin) {
+    types.push({ type: 'Users', link: '/users' });
+  }
+
   return (
     <div>
       <PageTitle>JourneyJot Blog Management</PageTitle>
       <div>
-        <Link to="/posts">
-          <Typography type="link">Posts</Typography>
-        </Link>
+        <Table
+          data={types}
+          columns={[
+            {
+              title: 'Type',
+              field: 'type'
+            }
+          ]}
+        />
       </div>
-      <div>
-        <Link to="/comments">
-          <Typography type="link">Comments</Typography>
-        </Link>
-      </div>
-      {auth?.admin && (
-        <div>
-          <Link to="/users">
-            <Typography type="link">Users</Typography>
-          </Link>
-        </div>
-      )}
     </div>
   );
 }
