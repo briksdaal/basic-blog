@@ -1,17 +1,32 @@
 import Typography from '../General/Typography';
 import { format } from 'date-fns';
+import Table from './Table';
 
 function UsersTable({ data }) {
+  console.log(data);
   return (
-    <>
-      <Typography>Users Table</Typography>
-      {data.users.map((u) => (
-        <div key={u._id} className="flex max-w-xl justify-between">
-          <span>{u.handle}</span>
-          {/* <span>{format(u.createdAt, "dd/MM/yyyy 'at' h:mma")}</span> */}
-        </div>
-      ))}
-    </>
+    <div>
+      <Typography>Users</Typography>
+      <Table
+        data={data.users}
+        columns={[
+          {
+            title: 'Handle',
+            field: 'handle'
+          },
+          {
+            title: 'Name',
+            field: 'fullname'
+          },
+          {
+            title: 'Admin',
+            field: 'admin',
+            fn: (v) => (v.admin ? 'Yes' : 'No')
+          }
+        ]}
+        route="/users"
+      />
+    </div>
   );
 }
 
