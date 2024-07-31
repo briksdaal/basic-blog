@@ -1,6 +1,6 @@
 import Typography from '../General/Typography';
 import Table from './Table';
-import { format } from 'date-fns';
+import { formatDate } from '../../helpers/formatDate';
 import { Link } from 'react-router-dom';
 
 function PostsTable({ data }) {
@@ -24,7 +24,7 @@ function PostsTable({ data }) {
           {
             title: 'Date',
             field: 'createdAt',
-            fn: (v) => format(v.createdAt, 'dd/MM/yyyy hh:mm:ss')
+            fn: (v) => formatDate(v.createdAt)
           },
           {
             title: 'Published',

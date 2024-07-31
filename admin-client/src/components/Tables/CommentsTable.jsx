@@ -1,6 +1,6 @@
 import Typography from '../General/Typography';
 import Table from './Table';
-import { format } from 'date-fns';
+import { formatDate } from '../../helpers/formatDate';
 
 function CommentsTable({ data }) {
   return (
@@ -21,7 +21,7 @@ function CommentsTable({ data }) {
           {
             title: 'Date',
             field: 'createdAt',
-            fn: (v) => format(v.createdAt, 'dd/MM/yyyy hh:mm:ss')
+            fn: (v) => formatDate(v.createdAt)
           }
         ]}
         route="/comments"
