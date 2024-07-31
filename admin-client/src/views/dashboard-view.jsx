@@ -1,12 +1,13 @@
 import useAuth from '../hooks/useAuth';
 import { Link } from 'react-router-dom';
 import Typography from '../components/General/Typography';
+import PageTitle from '../components/General/PageTitle';
 
 function DashboardView() {
   const { auth } = useAuth();
   return (
     <div>
-      <Typography>JourneyJot Blog Management</Typography>
+      <PageTitle>JourneyJot Blog Management</PageTitle>
       <div>
         <Link to="/posts">
           <Typography type="link">Posts</Typography>
