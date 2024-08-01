@@ -35,7 +35,7 @@ const PostSchema = new Schema(
 );
 
 PostSchema.virtual('timeToRead').get(function () {
-  return Math.ceil(this.content.split(' ').length / 182);
+  return this.content && Math.ceil(this.content.split(' ').length / 182);
 });
 
 PostSchema.virtual('imageUrl').get(function () {
