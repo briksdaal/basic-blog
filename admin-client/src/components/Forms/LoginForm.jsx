@@ -1,5 +1,5 @@
-import Typography from './General/Typography';
-import useLogin from '../hooks/useLogin.jsx';
+import Typography from '../General/Typography.jsx';
+import useLogin from '../../hooks/useLogin.jsx';
 import { useForm } from 'react-hook-form';
 
 function Input({ type, id, label, validations, register, errorMsg }) {

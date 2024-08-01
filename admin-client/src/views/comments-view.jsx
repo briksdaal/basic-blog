@@ -1,4 +1,4 @@
-import FetchWrapper from '../components/FetchWrapper';
+import FetchWrapper from '../components/General/FetchWrapper';
 import CommentsTable from '../components/Tables/CommentsTable';
 
 function CommentsView() {

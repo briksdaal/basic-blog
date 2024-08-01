@@ -1,4 +1,4 @@
-import FetchWrapper from '../components/FetchWrapper';
+import FetchWrapper from '../components/General/FetchWrapper';
 import PostsTable from '../components/Tables/PostsTable';
 
 function PostsView() {

@@ -1,8 +1,5 @@
-import FetchWrapper from '../components/FetchWrapper';
-
-function SingleCommentForm({ data }) {
-  return <div>{data.comment.content}</div>;
-}
+import FetchWrapper from '../components/General/FetchWrapper';
+import SingleCommentForm from '../components/Forms/SingleCommentForm';
 
 function SingleCommentView({ id }) {
   return (

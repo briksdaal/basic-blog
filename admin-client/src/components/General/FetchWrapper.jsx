@@ -1,10 +1,10 @@
-import useFetch from '../hooks/useFetch';
-import getFetcher from '../fetchers/getFetcher';
-import ErrorMessage from './General/ErrorMessage';
-import Loading from './General/Loading';
-import Breadcrumbs from './General/Breadcrumbs';
-import PageTitle from './General/PageTitle';
-import { getTitle } from '../helpers/getTitle';
+import useFetch from '../../hooks/useFetch';
+import getFetcher from '../../fetchers/getFetcher';
+import ErrorMessage from './ErrorMessage';
+import Loading from './Loading';
+import Breadcrumbs from './Breadcrumbs';
+import PageTitle from './PageTitle';
+import { getTitle } from '../../helpers/getTitle';
 import { Helmet } from 'react-helmet-async';
 function FetchWrapper({ Child, suffixUrl, trigger, title, ...props }) {
   const [data, loading, error] = useFetch(suffixUrl, getFetcher, trigger);

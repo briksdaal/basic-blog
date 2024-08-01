@@ -1,8 +1,5 @@
-import FetchWrapper from '../components/FetchWrapper';
-
-function SingleUserForm({ data }) {
-  return <div>{data.user.handle}</div>;
-}
+import FetchWrapper from '../components/General/FetchWrapper';
+import SingleUserForm from '../components/Forms/SingleUserForm';
 
 function SingleUserView({ id }) {
   return (

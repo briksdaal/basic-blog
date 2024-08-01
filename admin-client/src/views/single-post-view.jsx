@@ -1,8 +1,5 @@
-import FetchWrapper from '../components/FetchWrapper';
-
-function SinglePostForm({ data }) {
-  return <div>{data.post.title}</div>;
-}
+import FetchWrapper from '../components/General/FetchWrapper';
+import SinglePostForm from '../components/Forms/SinglePostForm';
 
 function SinglePostView({ id }) {
   return (
