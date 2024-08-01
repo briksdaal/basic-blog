@@ -1,6 +1,7 @@
 import useAuth from '../hooks/useAuth';
 import PageTitle from '../components/General/PageTitle';
 import Table from '../components/Tables/Table';
+import Breadcrumbs from '../components/General/Breadcrumbs';
 
 function DashboardView() {
   const { auth } = useAuth();
@@ -15,20 +16,23 @@ function DashboardView() {
   }
 
   return (
-    <div>
-      <PageTitle>JourneyJot Blog Management</PageTitle>
+    <>
+      <Breadcrumbs />
       <div>
-        <Table
-          data={types}
-          columns={[
-            {
-              title: 'Type',
-              field: 'type'
-            }
-          ]}
-        />
+        <PageTitle>JourneyJot Blog Management</PageTitle>
+        <div>
+          <Table
+            data={types}
+            columns={[
+              {
+                title: 'Type',
+                field: 'type'
+              }
+            ]}
+          />
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 

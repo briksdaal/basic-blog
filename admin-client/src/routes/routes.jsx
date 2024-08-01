@@ -5,12 +5,12 @@ import DashboardPage from '../pages/dashboard-page';
 import PostsPage from '../pages/posts-page';
 import CommentsPage from '../pages/comments-page';
 import UsersPage from '../pages/users-page';
+import SingleCommentPage from '../pages/single-comment-page';
 import UnauthorizedPage from '../pages/unauthorized-page';
 import ProtectedAccess from '../components/AuthComps/ProtectedAccess';
 import PersistentLogin from '../components/AuthComps/PersistentLogin';
 import LoggedInNavigate from '../components/AuthComps/LoggedInNavigate';
 import { Navigate } from 'react-router-dom';
-import { element } from 'prop-types';
 
 const routes = [
   {
@@ -28,19 +28,33 @@ const routes = [
               { index: true, element: <Navigate to="/dashboard" /> },
               {
                 path: '/dashboard',
-                element: <DashboardPage />
+                element: <DashboardPage />,
+                handle: { crumb: { title: 'Dashboard' } }
               },
               {
                 path: '/posts',
-                element: <PostsPage />
+                element: <PostsPage />,
+                handle: { crumb: { title: 'Posts' } }
               },
               {
                 path: '/comments',
-                element: <CommentsPage />
+                handle: { crumb: { title: 'Comments' } },
+                children: [
+                  {
+                    index: true,
+                    element: <CommentsPage />
+                  },
+                  {
+                    path: ':id',
+                    element: <SingleCommentPage />,
+                    handle: { crumb: { fetchTitle: true } }
+                  }
+                ]
               },
               {
                 path: '/users',
                 element: <ProtectedAccess adminOnly={true} />,
+                handle: { crumb: { title: 'Users' } },
                 children: [
                   {
                     index: true,

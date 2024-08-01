@@ -83,7 +83,7 @@ function Typography({ type, children, className = '' }) {
         </span>
       );
     default:
-      return <p className={createClassString('text-xl')}>{children}</p>;
+      return <span className={createClassString('text-xl')}>{children}</span>;
   }
 }
 

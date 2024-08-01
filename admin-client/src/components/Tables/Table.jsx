@@ -9,7 +9,7 @@ function Table({ data, columns, route, header = true }) {
       <table className="w-full text-left">
         {header && (
           <thead>
-            <tr className="bg-mantis-100">
+            <tr className="bg-mantis-300">
               {columns.map((c) => (
                 <th key={c.title} scope="col" className={cellClassList}>
                   <div className={c.className}>

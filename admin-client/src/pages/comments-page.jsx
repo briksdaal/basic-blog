@@ -5,7 +5,7 @@ function CommentsPage() {
   return (
     <>
       <Helmet>
-        <title>JourneyJot - Admin Comments</title>
+        <title>JourneyJot - Admin - Comments</title>
       </Helmet>
 
       <CommentsView />
