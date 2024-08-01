@@ -27,12 +27,14 @@ function FetchWrapper({ Child, suffixUrl, trigger, title, ...props }) {
   const computedTitle = getTitle(data);
   return (
     <>
-      {computedTitle && (
+      {computedTitle.current && (
         <Helmet>
-          <title>JourneyJot - {computedTitle}</title>
+          <title>
+            JourneyJot Admin - {computedTitle.parent} - {computedTitle.current}
+          </title>
         </Helmet>
       )}
-      <Breadcrumbs title={computedTitle} />
+      <Breadcrumbs title={computedTitle.current} />
       {title && <PageTitle>{title}</PageTitle>}
       <Child {...props} data={data} />
     </>

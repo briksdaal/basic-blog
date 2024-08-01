@@ -5,7 +5,7 @@ function UsersPage() {
   return (
     <>
       <Helmet>
-        <title>JourneyJot - Admin - Users</title>
+        <title>JourneyJot Admin - Users</title>
       </Helmet>
 
       <UsersView />

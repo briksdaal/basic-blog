@@ -5,12 +5,15 @@ import DashboardPage from '../pages/dashboard-page';
 import PostsPage from '../pages/posts-page';
 import CommentsPage from '../pages/comments-page';
 import UsersPage from '../pages/users-page';
+import SinglePostPage from '../pages/single-post-page';
 import SingleCommentPage from '../pages/single-comment-page';
+import SingleUserPage from '../pages/single-user-page';
 import UnauthorizedPage from '../pages/unauthorized-page';
 import ProtectedAccess from '../components/AuthComps/ProtectedAccess';
 import PersistentLogin from '../components/AuthComps/PersistentLogin';
 import LoggedInNavigate from '../components/AuthComps/LoggedInNavigate';
 import { Navigate } from 'react-router-dom';
+import { element } from 'prop-types';
 
 const routes = [
   {
@@ -33,8 +36,19 @@ const routes = [
               },
               {
                 path: '/posts',
-                element: <PostsPage />,
-                handle: { crumb: { title: 'Posts' } }
+
+                handle: { crumb: { title: 'Posts' } },
+                children: [
+                  {
+                    index: true,
+                    element: <PostsPage />
+                  },
+                  {
+                    path: ':id',
+                    element: <SinglePostPage />,
+                    handle: { crumb: { fetchTitle: true } }
+                  }
+                ]
               },
               {
                 path: '/comments',
@@ -59,6 +73,11 @@ const routes = [
                   {
                     index: true,
                     element: <UsersPage />
+                  },
+                  {
+                    path: ':id',
+                    element: <SingleUserPage />,
+                    handle: { crumb: { fetchTitle: true } }
                   }
                 ]
               },

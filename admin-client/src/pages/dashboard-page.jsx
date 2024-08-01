@@ -5,7 +5,7 @@ function DashboardPage() {
   return (
     <>
       <Helmet>
-        <title>JourneyJot - Admin - Dashboard</title>
+        <title>JourneyJot Admin - Dashboard</title>
       </Helmet>
 
       <DashboardView />

@@ -5,7 +5,7 @@ function PostsPage() {
   return (
     <>
       <Helmet>
-        <title>JourneyJot - Admin - Posts</title>
+        <title>JourneyJot Admin - Posts</title>
       </Helmet>
 
       <PostsView />

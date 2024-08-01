@@ -8,7 +8,7 @@ function SingleCommentPage() {
   return (
     <>
       <Helmet>
-        <title>JourneyJot - Comment {params.id}</title>
+        <title>JourneyJot Admin - Comment {params.id}</title>
       </Helmet>
 
       <SingleCommentView id={params.id} />

@@ -5,7 +5,7 @@ function UnauthorizedPage() {
   return (
     <>
       <Helmet>
-        <title>JourneyJot - Admin - Unauthorized</title>
+        <title>JourneyJot Admin - Unauthorized</title>
       </Helmet>
 
       <UnauthorizedView />

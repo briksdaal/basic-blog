@@ -5,7 +5,7 @@ function LoginPage() {
   return (
     <>
       <Helmet>
-        <title>JourneyJot - Login</title>
+        <title>JourneyJot Admin - Login</title>
       </Helmet>
 
       <LoginView />

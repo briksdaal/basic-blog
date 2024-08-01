@@ -1,10 +1,13 @@
 export function getTitle(data) {
   if (!data) {
-    return '';
+    return null;
   }
 
   if (data?.post) {
-    return data.post.title;
+    return {
+      parent: 'Posts',
+      current: data.post.title
+    };
   }
 
   if (data?.comment) {
@@ -13,11 +16,17 @@ export function getTitle(data) {
         ? data.comment?.content
         : `${data.comment?.content?.slice(0, 10)}...`;
 
-    return `${data.comment?.author}: ${content}`;
+    return {
+      parent: 'Comments',
+      current: `${data.comment?.author}: ${content}`
+    };
   }
 
   if (data?.user) {
-    return data.user.handle;
+    return {
+      parent: 'Users',
+      current: data.user.handle
+    };
   }
 
   return '';
