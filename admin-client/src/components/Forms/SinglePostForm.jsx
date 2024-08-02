@@ -5,6 +5,7 @@ import useFetch from '../../hooks/useFetch';
 import getFetcher from '../../fetchers/getFetcher';
 import Loading from '../General/Loading';
 import ErrorMessage from '../General/ErrorMessage';
+import { format } from 'date-fns';
 
 function SinglePostForm({ data = { post: {} } }) {
   const [authorsData, loading, error] = useFetch('/users', getFetcher);
@@ -25,11 +26,16 @@ function SinglePostForm({ data = { post: {} } }) {
     );
   }
 
-  const { title, content, author } = data?.post;
+  const { title, author, content, createdAt, editedAt } = data?.post;
+
   const authorsList = authorsData.users.map((a) => ({
     _id: a._id,
     handle: a.handle
   }));
+
+  const formattedCreatedAt = format(createdAt, 'yyyy-MM-dd');
+  const formattedEditedAt = format(editedAt, 'yyyy-MM-dd');
+
   const formFields = [
     {
       type: 'text',
@@ -49,6 +55,21 @@ function SinglePostForm({ data = { post: {} } }) {
       label: 'Content:',
       validations: { required: 'Content must not be empty' },
       rows: 20
+    },
+    {
+      type: 'container',
+      children: [
+        {
+          type: 'date',
+          id: 'createdAt',
+          label: 'Created At:'
+        },
+        {
+          type: 'date',
+          id: 'editedAt',
+          label: 'Edited At:'
+        }
+      ]
     }
   ];
 
@@ -56,7 +77,13 @@ function SinglePostForm({ data = { post: {} } }) {
     <ModelForm
       buttonText="Update"
       formFields={formFields}
-      existingValues={{ title, content, author: author._id }}
+      existingValues={{
+        title,
+        content,
+        author: author._id,
+        createdAt: formattedCreatedAt,
+        editedAt: formattedEditedAt
+      }}
       formAction={formAction}
       successMsg="Successfully updated! You're being redirected to main posts page..."
       redirectPath="/posts"
