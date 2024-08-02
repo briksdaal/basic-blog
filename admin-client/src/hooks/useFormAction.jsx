@@ -19,10 +19,10 @@ function useFormAction(suffixUrl = '', fetcher) {
 
     fetcher(fullUrl, auth.token, formData)
       .then((res) => {
-        if (res.status === 401) {
+        if (res.status === 401 || 403) {
           return refresh().then((token) => {
             if (!token) {
-              throw new Error(401);
+              throw new Error(res.status);
             }
             return fetcher(fullUrl, token, formData);
           });

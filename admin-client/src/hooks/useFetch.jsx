@@ -16,7 +16,7 @@ function useFetch(suffixUrl = '', fetcher, trigger) {
     setLoading(true);
     fetcher(fullUrl, auth.token)
       .then((res) => {
-        if (res.status === 401) {
+        if (res.status === 401 || 403) {
           return refresh().then((token) => {
             if (!token) {
               throw new Error(res.status);
