@@ -6,6 +6,7 @@ import Breadcrumbs from './Breadcrumbs';
 import PageTitle from './PageTitle';
 import { getTitle } from '../../helpers/getTitle';
 import { Helmet } from 'react-helmet-async';
+
 function FetchWrapper({ Child, suffixUrl, trigger, title, ...props }) {
   const [data, loading, error] = useFetch(suffixUrl, getFetcher, trigger);
 
