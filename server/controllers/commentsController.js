@@ -145,7 +145,7 @@ export const comment_detail = [
     let comment;
     try {
       comment = await Comment.findById(req.params.id)
-        .populate('post', { published: 1 })
+        .populate('post', { published: 1, title: 1 })
         .exec();
     } catch (err) {
       comment = null;
