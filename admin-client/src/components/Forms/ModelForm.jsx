@@ -81,16 +81,18 @@ function ModelForm({
               </div>
             )}
           </div>
-          {serverError && (
-            <Typography type="small" className="text-red-600">
-              {serverError}
-            </Typography>
-          )}
-          {success && (
-            <Typography type="small">
-              {successMsg || 'Success! Redirecting...'}
-            </Typography>
-          )}
+          <div className="min-h-8">
+            {serverError && (
+              <Typography type="small" className="text-red-600">
+                {serverError}
+              </Typography>
+            )}
+            {success && (
+              <Typography type="small">
+                {successMsg || 'Success! Redirecting...'}
+              </Typography>
+            )}
+          </div>
         </div>
       </form>
     </div>
