@@ -38,15 +38,30 @@ function ModelForm({
   return (
     <div className="mx-auto">
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
-        <div>
-          {formFields.map((ff) => (
-            <GeneralInput
-              key={ff.id}
-              {...ff}
-              register={register}
-              errorMsg={errors[ff.id]?.message}
-            />
-          ))}
+        <div className="flex flex-col gap-2">
+          {formFields.map((ff) =>
+            ff.type !== 'container' ? (
+              <div key={ff.id}>
+                <GeneralInput
+                  {...ff}
+                  register={register}
+                  errorMsg={errors[ff.id]?.message}
+                />
+              </div>
+            ) : (
+              <div className="flex w-full flex-col justify-between gap-2 sm:max-w-2xl sm:flex-row sm:gap-8">
+                {ff.children.map((ff) => (
+                  <div key={ff.id} className="grow">
+                    <GeneralInput
+                      {...ff}
+                      register={register}
+                      errorMsg={errors[ff.id]?.message}
+                    />
+                  </div>
+                ))}
+              </div>
+            )
+          )}
         </div>
         <div className="flex flex-col gap-2">
           <div className="flex justify-between sm:max-w-sm">
