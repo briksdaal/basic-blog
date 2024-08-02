@@ -49,13 +49,15 @@ function ModelForm({
                 />
               </div>
             ) : (
-              <div className="flex w-full flex-col justify-between gap-2 sm:max-w-2xl sm:flex-row sm:gap-8">
-                {ff.children.map((ff) => (
-                  <div key={ff.id} className="grow">
+              <div
+                key={ff.id}
+                className="flex w-full flex-col justify-between gap-2 sm:max-w-2xl sm:flex-row sm:gap-8">
+                {ff.children.map((ffi) => (
+                  <div key={ffi.id} className="grow">
                     <GeneralInput
-                      {...ff}
+                      {...ffi}
                       register={register}
-                      errorMsg={errors[ff.id]?.message}
+                      errorMsg={errors[ffi.id]?.message}
                     />
                   </div>
                 ))}

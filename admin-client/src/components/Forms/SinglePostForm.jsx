@@ -5,7 +5,7 @@ import useFetch from '../../hooks/useFetch';
 import getFetcher from '../../fetchers/getFetcher';
 import Loading from '../General/Loading';
 import ErrorMessage from '../General/ErrorMessage';
-import { format } from 'date-fns';
+import { formatForDatePicker } from '../../helpers/formatDate';
 
 function SinglePostForm({ data = { post: {} } }) {
   const [authorsData, loading, error] = useFetch('/users', getFetcher);
@@ -33,8 +33,8 @@ function SinglePostForm({ data = { post: {} } }) {
     handle: a.handle
   }));
 
-  const formattedCreatedAt = format(createdAt, 'yyyy-MM-dd');
-  const formattedEditedAt = format(editedAt, 'yyyy-MM-dd');
+  const formattedCreatedAt = formatForDatePicker(createdAt);
+  const formattedEditedAt = formatForDatePicker(editedAt);
 
   const formFields = [
     {
@@ -58,14 +58,15 @@ function SinglePostForm({ data = { post: {} } }) {
     },
     {
       type: 'container',
+      id: 'container-1',
       children: [
         {
-          type: 'date',
+          type: 'datetime-local',
           id: 'createdAt',
           label: 'Created At:'
         },
         {
-          type: 'date',
+          type: 'datetime-local',
           id: 'editedAt',
           label: 'Edited At:'
         }

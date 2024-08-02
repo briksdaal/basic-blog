@@ -8,6 +8,7 @@ function Input({ type, id, label, validations, register, errorMsg }) {
       </label>
       <div className="flex rounded-md ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-gray-600 sm:max-w-sm">
         <input
+          step={type === 'datetime-local' ? 1 : null}
           type={type}
           id={id}
           {...register(id, { ...validations })}
