@@ -1,6 +1,8 @@
 import useFormAction from '../../hooks/useFormAction';
 import putFetcher from '../../fetchers/putFetcher';
 import ModelForm from './ModelForm';
+import Typography from '../General/Typography';
+import { Link } from 'react-router-dom';
 
 function SingleCommentForm({ data = { comment: {} } }) {
   const formAction = useFormAction(
@@ -25,14 +27,22 @@ function SingleCommentForm({ data = { comment: {} } }) {
   ];
 
   return (
-    <ModelForm
-      buttonText="Update"
-      formFields={formFields}
-      existingValues={{ author, content }}
-      formAction={formAction}
-      successMsg="Successfully updated! You're being redirected to main comments page..."
-      redirectPath="/comments"
-    />
+    <>
+      <div className="mb-4">
+        <Typography type="smaller">For post: </Typography>
+        <Link to={`/posts/${data.comment.post._id}`}>
+          <Typography type="smallerLink">{data.comment.post.title}</Typography>
+        </Link>
+      </div>
+      <ModelForm
+        buttonText="Update"
+        formFields={formFields}
+        existingValues={{ author, content }}
+        formAction={formAction}
+        successMsg="Successfully updated! You're being redirected to main comments page..."
+        redirectPath="/comments"
+      />
+    </>
   );
 }
 
