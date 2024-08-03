@@ -16,7 +16,7 @@ import {
 function verifyUser(req, res, next) {
   if (!req.user.admin && !req.user._id.equals(req.params.id)) {
     return res.status(403).json({
-      error: 'Forbidden',
+      errors: ['Forbidden'],
     });
   }
   next();
@@ -25,7 +25,7 @@ function verifyUser(req, res, next) {
 function verifyAdmin(req, res, next) {
   if (!req.user.admin) {
     return res.status(403).json({
-      error: 'Forbidden',
+      errors: ['Forbidden'],
     });
   }
   next();
