@@ -18,7 +18,8 @@ function ModelForm({
   const {
     register,
     handleSubmit,
-    formState: { errors }
+    formState: { errors },
+    setValue
   } = useForm({ values: existingValues });
 
   const navigate = useNavigate();
@@ -28,6 +29,7 @@ function ModelForm({
   }
 
   useEffect(() => {
+    return;
     if (success) {
       setTimeout(() => {
         navigate(redirectPath);
@@ -46,6 +48,7 @@ function ModelForm({
                   {...ff}
                   register={register}
                   errorMsg={errors[ff.id]?.message}
+                  setValue={setValue}
                 />
               </div>
             ) : (
@@ -53,7 +56,7 @@ function ModelForm({
                 key={ff.id}
                 className="flex w-full flex-col justify-between gap-2 sm:max-w-2xl sm:flex-row sm:gap-8">
                 {ff.children.map((ffi) => (
-                  <div key={ffi.id} className="grow">
+                  <div key={ffi.id} className="flex-1">
                     <GeneralInput
                       {...ffi}
                       register={register}
@@ -69,7 +72,7 @@ function ModelForm({
           <div className="flex justify-between sm:max-w-sm">
             <button
               type="submit"
-              disabled={loading || success}
+              disabled={loading}
               className="text-md rounded-md bg-mantis-400 px-6 py-2 font-bold text-white shadow-sm hover:bg-mantis-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-mantis-400 disabled:bg-mantis-300">
               {buttonText}
             </button>

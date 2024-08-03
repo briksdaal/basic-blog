@@ -1,6 +1,7 @@
 import Input from './Input';
 import TextArea from './TextArea';
 import Select from './Select';
+import ImageFile from './ImageFile';
 
 function GeneralInput(props) {
   if (props.type === 'textarea') {
@@ -9,6 +10,10 @@ function GeneralInput(props) {
 
   if (props.type === 'select') {
     return Select(props);
+  }
+
+  if (props.type === 'imagefile') {
+    return ImageFile(props);
   }
 
   return Input(props);

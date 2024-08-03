@@ -26,28 +26,42 @@ function SinglePostForm({ data = { post: {} } }) {
     );
   }
 
-  const { title, author, content, createdAt, editedAt } = data?.post;
+  const { title, author, content, createdAt, editedAt, imageUrl } = data?.post;
 
-  const authorsList = authorsData.users.map((a) => ({
+  const authorsList = authorsData?.users?.map((a) => ({
     _id: a._id,
     handle: a.handle
   }));
 
-  const formattedCreatedAt = formatForDatePicker(createdAt);
-  const formattedEditedAt = formatForDatePicker(editedAt);
+  const formattedCreatedAt = createdAt && formatForDatePicker(createdAt);
+  const formattedEditedAt = editedAt && formatForDatePicker(editedAt);
+
+  const fullUrl = imageUrl && `${import.meta.env.VITE_API_URL}/${imageUrl}`;
 
   const formFields = [
     {
-      type: 'text',
-      id: 'title',
-      label: 'Title:',
-      validations: { required: 'Title must not be empty' }
+      type: 'container',
+      id: 'container-1',
+      children: [
+        {
+          type: 'text',
+          id: 'title',
+          label: 'Title:',
+          validations: { required: 'Title must not be empty' }
+        },
+        {
+          type: 'select',
+          id: 'author',
+          label: 'Author:',
+          options: authorsList
+        }
+      ]
     },
     {
-      type: 'select',
-      id: 'author',
-      label: 'Author:',
-      options: authorsList
+      type: 'imagefile',
+      id: 'image',
+      label: 'Post Image:',
+      existing: fullUrl
     },
     {
       type: 'textarea',
@@ -58,7 +72,7 @@ function SinglePostForm({ data = { post: {} } }) {
     },
     {
       type: 'container',
-      id: 'container-1',
+      id: 'container-2',
       children: [
         {
           type: 'datetime-local',
