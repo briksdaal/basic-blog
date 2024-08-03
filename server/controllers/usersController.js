@@ -140,7 +140,7 @@ export const user_detail = [
 
     if (!user) {
       return res.status(404).json({
-        error: 'User not found',
+        errors: ['User not found'],
       });
     }
 
@@ -203,6 +203,15 @@ export const update_user_put = [
       });
     }
 
+    if (req.body.admin === 'false') {
+      const adminCount = await User.countDocuments({ admin: true });
+      if (adminCount === 1) {
+        return res.status(405).json({
+          errors: ["Can't remove admin privileges from last admin user"],
+        });
+      }
+    }
+
     Object.keys(req.body).forEach((e) => {
       if (
         e === 'email' ||
@@ -261,7 +270,7 @@ export const user_delete = [
 
     if (!user) {
       return res.status(404).json({
-        error: 'User not found',
+        errors: ['User not found'],
       });
     }
 
@@ -269,7 +278,7 @@ export const user_delete = [
       const adminCount = await User.countDocuments({ admin: true });
       if (adminCount === 1) {
         return res.status(405).json({
-          error: "Can't delete last admin user",
+          errors: ["Can't delete last admin user"],
         });
       }
     }
