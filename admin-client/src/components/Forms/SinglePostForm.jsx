@@ -5,7 +5,7 @@ import useFetch from '../../hooks/useFetch';
 import getFetcher from '../../fetchers/getFetcher';
 import Loading from '../General/Loading';
 import ErrorMessage from '../General/ErrorMessage';
-import ReferenceToLink from '../General/ReferenceToLink';
+import { ReferenceToOuterLink } from '../General/ReferenceToLink';
 import { formatForDatePicker } from '../../helpers/formatDate';
 
 function SinglePostForm({ data = { post: {} } }) {
@@ -112,7 +112,9 @@ function SinglePostForm({ data = { post: {} } }) {
 
   return (
     <>
-      {published && <ReferenceToLink suffixUrl={`/posts/${data?.post?._id}`} />}
+      {published && (
+        <ReferenceToOuterLink suffixUrl={`/posts/${data?.post?._id}`} />
+      )}
       <ModelForm
         buttonText="Update"
         formFields={formFields}

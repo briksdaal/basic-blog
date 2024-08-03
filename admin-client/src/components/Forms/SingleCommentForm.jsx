@@ -1,8 +1,7 @@
 import useFormAction from '../../hooks/useFormAction';
 import putFetcherJson from '../../fetchers/putFetcherJson';
 import ModelForm from './ModelForm';
-import Typography from '../General/Typography';
-import { Link } from 'react-router-dom';
+import { ReferenceToInnerLink } from '../General/ReferenceToLink';
 
 function SingleCommentForm({ data = { comment: {} } }) {
   const formAction = useFormAction(
@@ -28,12 +27,13 @@ function SingleCommentForm({ data = { comment: {} } }) {
 
   return (
     <>
-      <div className="mb-4">
-        <Typography type="smaller">For post: </Typography>
-        <Link to={`/posts/${data.comment.post._id}`}>
-          <Typography type="smallerLink">{data.comment.post.title}</Typography>
-        </Link>
-      </div>
+      {data?.comment?.post && (
+        <ReferenceToInnerLink
+          text="For Post:"
+          suffixUrl={`/posts/${data.comment.post?._id}`}
+          linkText={data.comment.post?.title}
+        />
+      )}
       <ModelForm
         buttonText="Update"
         formFields={formFields}
