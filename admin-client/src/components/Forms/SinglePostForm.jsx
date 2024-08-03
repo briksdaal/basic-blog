@@ -5,6 +5,7 @@ import useFetch from '../../hooks/useFetch';
 import getFetcher from '../../fetchers/getFetcher';
 import Loading from '../General/Loading';
 import ErrorMessage from '../General/ErrorMessage';
+import ReferenceToLink from '../General/ReferenceToLink';
 import { formatForDatePicker } from '../../helpers/formatDate';
 
 function SinglePostForm({ data = { post: {} } }) {
@@ -107,21 +108,24 @@ function SinglePostForm({ data = { post: {} } }) {
   ];
 
   return (
-    <ModelForm
-      buttonText="Update"
-      formFields={formFields}
-      existingValues={{
-        published,
-        title,
-        content,
-        author: author._id,
-        createdAt: formattedCreatedAt,
-        editedAt: formattedEditedAt
-      }}
-      formAction={formAction}
-      successMsg="Successfully updated! You're being redirected to main posts page..."
-      redirectPath="/posts"
-    />
+    <>
+      {published && <ReferenceToLink suffixUrl={`/posts/${data?.post?._id}`} />}
+      <ModelForm
+        buttonText="Update"
+        formFields={formFields}
+        existingValues={{
+          published,
+          title,
+          content,
+          author: author._id,
+          createdAt: formattedCreatedAt,
+          editedAt: formattedEditedAt
+        }}
+        formAction={formAction}
+        successMsg="Successfully updated! You're being redirected to main posts page..."
+        redirectPath="/posts"
+      />
+    </>
   );
 }
 
