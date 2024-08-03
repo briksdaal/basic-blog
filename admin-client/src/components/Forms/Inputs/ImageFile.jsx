@@ -25,7 +25,9 @@ function ImageFile({
     } else {
       setPreviewImage(existing);
     }
+
     setRemoveImage('');
+    setValue('removeImage', '');
   }
 
   function handleRemoveChange() {
