@@ -1,5 +1,5 @@
 import useFormAction from '../../hooks/useFormAction';
-import putFetcher from '../../fetchers/putFetcher';
+import putFetcherJson from '../../fetchers/putFetcherJson';
 import ModelForm from './ModelForm';
 import Typography from '../General/Typography';
 import { Link } from 'react-router-dom';
@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 function SingleCommentForm({ data = { comment: {} } }) {
   const formAction = useFormAction(
     `/comments/${data?.comment?._id}`,
-    putFetcher
+    putFetcherJson
   );
   const { author, content } = data?.comment;
 

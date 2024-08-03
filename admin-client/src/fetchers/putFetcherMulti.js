@@ -1,4 +1,4 @@
-function putFetcher(fullUrl, token, payload) {
+function putFetcherMulti(fullUrl, token, payload) {
   const formData = new FormData();
 
   Object.entries(payload).forEach((e) => {
@@ -19,4 +19,4 @@ function putFetcher(fullUrl, token, payload) {
   });
 }
 
-export default putFetcher;
+export default putFetcherMulti;

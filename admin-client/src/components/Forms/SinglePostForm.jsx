@@ -1,5 +1,5 @@
 import useFormAction from '../../hooks/useFormAction';
-import putFetcher from '../../fetchers/putFetcher';
+import putFetcherMulti from '../../fetchers/putFetcherMulti';
 import ModelForm from './ModelForm';
 import useFetch from '../../hooks/useFetch';
 import getFetcher from '../../fetchers/getFetcher';
@@ -10,7 +10,10 @@ import { formatForDatePicker } from '../../helpers/formatDate';
 
 function SinglePostForm({ data = { post: {} } }) {
   const [authorsData, loading, error] = useFetch('/users', getFetcher);
-  const formAction = useFormAction(`/posts/${data?.post?._id}`, putFetcher);
+  const formAction = useFormAction(
+    `/posts/${data?.post?._id}`,
+    putFetcherMulti
+  );
 
   if (!authorsData && loading) {
     return (
