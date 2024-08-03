@@ -19,7 +19,7 @@ function useFormAction(suffixUrl = '', fetcher) {
 
     fetcher(fullUrl, auth.token, formData)
       .then((res) => {
-        if (res.status === 401 || 403) {
+        if (res.status === 401 || res.status === 403) {
           return refresh().then((token) => {
             if (!token) {
               throw new Error(res.status);
@@ -33,7 +33,7 @@ function useFormAction(suffixUrl = '', fetcher) {
       .then(async (res) => {
         if (res.status > 200) {
           const errors = await res.json();
-          throw new Error(errors?.errors?.errors[0].msg);
+          throw new Error(errors?.errors[0].msg);
         }
         return res.json();
       })
