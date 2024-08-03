@@ -26,11 +26,23 @@ function SinglePostForm({ data = { post: {} } }) {
     );
   }
 
-  const { title, author, content, createdAt, editedAt, imageUrl } = data?.post;
+  const { published, title, author, content, createdAt, editedAt, imageUrl } =
+    data?.post;
+
+  const publishedOptions = [
+    {
+      value: false,
+      text: 'Unpublished'
+    },
+    {
+      value: true,
+      text: 'Published'
+    }
+  ];
 
   const authorsList = authorsData?.users?.map((a) => ({
-    _id: a._id,
-    handle: a.handle
+    value: a._id,
+    text: a.handle
   }));
 
   const formattedCreatedAt = createdAt && formatForDatePicker(createdAt);
@@ -39,6 +51,12 @@ function SinglePostForm({ data = { post: {} } }) {
   const fullUrl = imageUrl && `${import.meta.env.VITE_API_URL}/${imageUrl}`;
 
   const formFields = [
+    {
+      type: 'select',
+      id: 'published',
+      label: 'Published Status:',
+      options: publishedOptions
+    },
     {
       type: 'container',
       id: 'container-1',
@@ -93,6 +111,7 @@ function SinglePostForm({ data = { post: {} } }) {
       buttonText="Update"
       formFields={formFields}
       existingValues={{
+        published,
         title,
         content,
         author: author._id,
