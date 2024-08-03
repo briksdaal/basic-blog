@@ -11,7 +11,7 @@ export const comment_list = [
   asyncHandler(async function (req, res) {
     if (!req.query.post && !req.user) {
       res.status(403).json({
-        error: 'All comments forbidden',
+        errors: ['All comments forbidden'],
       });
     }
 
@@ -27,13 +27,13 @@ export const comment_list = [
 
       if (!post) {
         return res.status(404).json({
-          error: 'Post not found',
+          errors: ['Post not found'],
         });
       }
 
       if (!post.published && !req.user) {
         return res.status(403).json({
-          error: 'Post forbidden',
+          errors: ['Post forbidden'],
         });
       }
 
@@ -96,16 +96,14 @@ export const comment_create = [
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
-      return res.status(400).json({
-        errors,
-      });
+      return res.status(400).json(errors);
     }
 
     const post = await Post.findById(req.body.post);
 
     if (!post.published && !req.user) {
       return res.status(403).json({
-        error: 'Comment to post is forbidden',
+        errors: ['Comment to post is forbidden'],
       });
     }
 
@@ -153,13 +151,13 @@ export const comment_detail = [
 
     if (!comment) {
       return res.status(404).json({
-        error: 'Comment not found',
+        errors: ['Comment not found'],
       });
     }
 
     if (!comment.post.published && !req.user) {
       return res.status(403).json({
-        error: 'Comment forbidden',
+        errors: ['Comment forbidden'],
       });
     }
 
@@ -222,9 +220,7 @@ export const comment_update = [
   asyncHandler(async function (req, res) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({
-        errors,
-      });
+      return res.status(400).json(errors);
     }
 
     let comment;
@@ -236,7 +232,7 @@ export const comment_update = [
 
     if (!comment) {
       return res.status(404).json({
-        error: 'Comment not found',
+        errors: ['Comment not found'],
       });
     }
 
@@ -292,7 +288,7 @@ export const comment_delete = [
 
     if (!comment) {
       return res.status(404).json({
-        error: 'Comment not found',
+        errors: ['Comment not found'],
       });
     }
 

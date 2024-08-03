@@ -4,8 +4,6 @@ import Post from '../models/post.js';
 import User from '../models/user.js';
 import Comment from '../models/comment.js';
 import { imageUploadAndValidation, deleteImage } from './helpers/image.js';
-import { bucket } from '../config/mongoose.js';
-import { createReadStream } from 'fs';
 import passport from 'passport';
 import { ObjectIdIsValid } from '../config/mongoose.js';
 import db from '../config/mongoose.js';
@@ -87,9 +85,7 @@ export const post_create = [
     if (!errors.isEmpty()) {
       deleteImage(req.file?.path);
 
-      return res.status(400).json({
-        errors,
-      });
+      return res.status(400).json(errors);
     }
 
     if (!req.user.admin && !req.user._id.equals(req.body.author)) {
@@ -141,13 +137,13 @@ export const post_detail = [
 
     if (!post) {
       return res.status(404).json({
-        error: 'Post not found',
+        errors: ['Post not found'],
       });
     }
 
     if (!post.published && !req.user) {
       return res.status(403).json({
-        error: 'Post forbidden',
+        errors: ['Post forbidden'],
       });
     }
 
@@ -213,9 +209,7 @@ export const post_update = [
     if (!errors.isEmpty()) {
       deleteImage(req.file?.path);
 
-      return res.status(400).json({
-        errors,
-      });
+      return res.status(400).json(errors);
     }
 
     if (req.body.author && !req.user.admin) {
@@ -233,7 +227,7 @@ export const post_update = [
 
     if (!post) {
       return res.status(404).json({
-        error: 'Post not found',
+        errors: ['Post not found'],
       });
     }
     Object.keys(req.body).forEach((e) => {
@@ -293,7 +287,7 @@ export const post_delete = [
 
     if (!post) {
       return res.status(404).json({
-        error: 'Post not found',
+        errors: ['Post not found'],
       });
     }
 
@@ -322,7 +316,7 @@ export const post_delete = [
 
     if (!post) {
       return res.status(404).json({
-        error: 'Post not found',
+        errors: ['Post not found'],
       });
     }
 

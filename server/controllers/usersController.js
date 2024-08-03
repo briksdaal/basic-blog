@@ -192,7 +192,6 @@ export const update_user_put = [
 
     if (!errors.isEmpty()) {
       deleteImage(req.file?.path);
-
       return res.status(400).json(errors);
     }
 
@@ -200,7 +199,7 @@ export const update_user_put = [
 
     if (!user) {
       return res.status(404).json({
-        error: 'User not found',
+        errors: ['User not found'],
       });
     }
 
