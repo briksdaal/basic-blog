@@ -71,6 +71,9 @@ function SingleCommentForm({ data = { comment: {} } }) {
         buttonText="Update"
         formFields={formFields}
         existingValues={{ post: post?._id, author, content }}
+        defaultValues={{
+          post: ''
+        }}
         formAction={formAction}
         successMsg="Successfully updated! You're being redirected to main comments page..."
         redirectPath="/comments"

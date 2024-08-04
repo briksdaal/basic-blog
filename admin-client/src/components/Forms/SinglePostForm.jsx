@@ -127,6 +127,10 @@ function SinglePostForm({ data = { post: {} } }) {
           createdAt: formattedCreatedAt,
           editedAt: formattedEditedAt
         }}
+        defaultValues={{
+          published: '',
+          author: ''
+        }}
         formAction={formAction}
         successMsg="Successfully updated! You're being redirected to main posts page..."
         redirectPath="/posts"

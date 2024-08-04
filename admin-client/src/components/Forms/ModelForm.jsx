@@ -9,6 +9,7 @@ function ModelForm({
   buttonText,
   formFields,
   existingValues,
+  defaultValues,
   formAction,
   successMsg,
   redirectPath = '/dashboard',
@@ -22,7 +23,7 @@ function ModelForm({
     handleSubmit,
     formState: { errors },
     setValue
-  } = useForm({ values: existingValues });
+  } = useForm({ values: existingValues, defaultValues: defaultValues });
 
   const navigate = useNavigate();
 

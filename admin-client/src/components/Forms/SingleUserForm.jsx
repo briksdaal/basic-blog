@@ -102,6 +102,9 @@ function SingleUserForm({ data = { user: {} } }) {
         buttonText="Update"
         formFields={formFields}
         existingValues={{ handle, firstname, lastname, admin }}
+        defaultValues={{
+          admin: ''
+        }}
         formAction={formAction}
         successMsg="Successfully updated! You're being redirected to main users page..."
         redirectPath="/users"
