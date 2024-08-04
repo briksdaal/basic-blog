@@ -12,7 +12,8 @@ function ModelForm({
   formAction,
   successMsg,
   redirectPath = '/dashboard',
-  submitColor = 'green'
+  submitColor = 'green',
+  centered = false
 }) {
   const { action, loading, errors: serverError, success } = formAction;
 
@@ -29,7 +30,7 @@ function ModelForm({
     'bg-mantis-400 hover:bg-mantis-300 focus-visible:outline-mantis-400 disabled:bg-mantis-300';
 
   const redColors =
-    'bg-red-500 hover:bg-red-300 focus-visible:outline-red-500 disabled:bg-red-300"';
+    'bg-red-500 hover:bg-red-300 focus-visible:outline-red-500 disabled:bg-red-300';
 
   function onSubmit(data) {
     action(data);
@@ -75,16 +76,18 @@ function ModelForm({
             )
           )}
         </div>
-        <div className="flex flex-col gap-2">
-          <div className="flex justify-between sm:max-w-sm">
+        <div className={`flex flex-col gap-2 ${centered && 'items-center'}`}>
+          <div
+            className={`flex justify-between sm:max-w-sm ${centered && 'flex-col gap-6'}`}>
             <button
               type="submit"
-              disabled={loading}
+              disabled={loading || success}
               className={`text-md rounded-md px-6 py-2 font-bold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ${submitColor === 'green' ? greenColors : redColors}`}>
               {buttonText}
             </button>
             {loading && (
-              <div className="flex items-center">
+              <div
+                className={`flex items-center ${centered && 'justify-center'}`}>
                 <div className="h-8 w-8">
                   <Loading />
                 </div>
