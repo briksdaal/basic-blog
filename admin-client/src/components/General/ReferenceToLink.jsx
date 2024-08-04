@@ -8,7 +8,9 @@ export function ReferenceToOuterLink({ text = 'Live At', suffixUrl }) {
     <div className="mb-2">
       <Typography type="smaller">{text}</Typography>{' '}
       <a href={url} target="blank" rel="noopener noreferrer">
-        <Typography type="smallerLink">{url}</Typography>
+        <Typography type="smallerLink" className="break-all">
+          {url}
+        </Typography>
       </a>
     </div>
   );

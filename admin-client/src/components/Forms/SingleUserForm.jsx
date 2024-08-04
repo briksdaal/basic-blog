@@ -1,6 +1,7 @@
 import useFormAction from '../../hooks/useFormAction';
 import putFetcherMulti from '../../fetchers/putFetcherMulti';
 import ModelForm from './ModelForm';
+import DeleteForm from './DeleteForm';
 import { ReferenceToOuterLink } from '../General/ReferenceToLink';
 
 function SingleUserForm({ data = { user: {} } }) {
@@ -76,6 +77,13 @@ function SingleUserForm({ data = { user: {} } }) {
         successMsg="Successfully updated! You're being redirected to main users page..."
         redirectPath="/users"
       />
+      {data?.user?._id && (
+        <DeleteForm
+          type="User"
+          suffixUrl={`/users/${data.user._id}`}
+          redirectPath={'/users'}
+        />
+      )}
     </>
   );
 }

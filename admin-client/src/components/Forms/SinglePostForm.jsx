@@ -5,6 +5,7 @@ import useFetch from '../../hooks/useFetch';
 import getFetcher from '../../fetchers/getFetcher';
 import Loading from '../General/Loading';
 import ErrorMessage from '../General/ErrorMessage';
+import DeleteForm from './DeleteForm';
 import { ReferenceToOuterLink } from '../General/ReferenceToLink';
 import { formatForDatePicker } from '../../helpers/formatDate';
 
@@ -130,6 +131,13 @@ function SinglePostForm({ data = { post: {} } }) {
         successMsg="Successfully updated! You're being redirected to main posts page..."
         redirectPath="/posts"
       />
+      {data?.post?._id && (
+        <DeleteForm
+          type="Post"
+          suffixUrl={`/posts/${data.post._id}`}
+          redirectPath={'/posts'}
+        />
+      )}
     </>
   );
 }

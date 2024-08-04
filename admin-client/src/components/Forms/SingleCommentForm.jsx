@@ -1,6 +1,7 @@
 import useFormAction from '../../hooks/useFormAction';
 import putFetcherJson from '../../fetchers/putFetcherJson';
 import ModelForm from './ModelForm';
+import DeleteForm from './DeleteForm';
 import { ReferenceToInnerLink } from '../General/ReferenceToLink';
 
 function SingleCommentForm({ data = { comment: {} } }) {
@@ -42,6 +43,13 @@ function SingleCommentForm({ data = { comment: {} } }) {
         successMsg="Successfully updated! You're being redirected to main comments page..."
         redirectPath="/comments"
       />
+      {data?.comment?._id && (
+        <DeleteForm
+          type="Comment"
+          suffixUrl={`/comments/${data.comment._id}`}
+          redirectPath={'/comments'}
+        />
+      )}
     </>
   );
 }
