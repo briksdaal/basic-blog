@@ -15,9 +15,15 @@ function PostsTable({ data }) {
           {
             title: 'Author',
             field: 'author',
-            fn: (v) => (
-              <Link to={`/users/${v.author._id}`}>{v.author.handle}</Link>
-            ),
+            fn: (v) => {
+              if (v?.author?._id) {
+                return (
+                  <Link to={`/users/${v.author._id}`}>{v.author.handle}</Link>
+                );
+              } else {
+                return;
+              }
+            },
             typographyType: 'smallerLink'
           },
           {
