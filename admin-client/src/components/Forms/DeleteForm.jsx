@@ -5,7 +5,7 @@ import useFormAction from '../../hooks/useFormAction';
 import deleteFetcher from '../../fetchers/deleteFetcher';
 import Typography from '../General/Typography';
 
-function ModalContent({ type, suffixUrl, redirectPath }) {
+function ModalContent({ type, suffixUrl, redirectPath, setHoldModal }) {
   const formAction = useFormAction(suffixUrl, deleteFetcher);
 
   return (
@@ -20,6 +20,7 @@ function ModalContent({ type, suffixUrl, redirectPath }) {
             redirectPath={redirectPath}
             submitColor="red"
             centered={true}
+            setHoldModal={setHoldModal}
           />
         </div>
       </div>
@@ -29,6 +30,7 @@ function ModalContent({ type, suffixUrl, redirectPath }) {
 
 function DeleteForm({ type, suffixUrl, redirectPath }) {
   const [overlay, setOverlay] = useState(false);
+  const [holdModal, setHoldModal] = useState(false);
 
   return (
     <div>
@@ -40,12 +42,13 @@ function DeleteForm({ type, suffixUrl, redirectPath }) {
           Delete {type}
         </button>
       </div>
-      {overlay && (
+      {(overlay || holdModal) && (
         <Modal close={() => setOverlay(false)}>
           <ModalContent
             type={type}
             suffixUrl={suffixUrl}
             redirectPath={redirectPath}
+            setHoldModal={setHoldModal}
           />
         </Modal>
       )}

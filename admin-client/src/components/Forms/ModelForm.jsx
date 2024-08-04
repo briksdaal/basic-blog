@@ -14,7 +14,8 @@ function ModelForm({
   successMsg,
   redirectPath = '/dashboard',
   submitColor = 'green',
-  centered = false
+  centered = false,
+  setHoldModal
 }) {
   const { action, loading, errors: serverError, success } = formAction;
 
@@ -34,16 +35,28 @@ function ModelForm({
     'bg-red-500 hover:bg-red-300 focus-visible:outline-red-500 disabled:bg-red-300';
 
   function onSubmit(data) {
+    if (setHoldModal) {
+      setHoldModal(true);
+    }
     action(data);
   }
 
   useEffect(() => {
+    if (setHoldModal) {
+      setHoldModal(true);
+    }
     if (success) {
       setTimeout(() => {
         navigate(redirectPath);
       }, 1000);
     }
   }, [success]);
+
+  useEffect(() => {
+    if (serverError && setHoldModal) {
+      setHoldModal(false);
+    }
+  }, [serverError]);
 
   return (
     <div className="mx-auto">
