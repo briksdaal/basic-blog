@@ -33,7 +33,9 @@ function useFormAction(suffixUrl = '', fetcher) {
       .then(async (res) => {
         if (res.status > 200) {
           const errors = await res.json();
-          throw new Error(errors?.errors[0].msg || errors?.errors[0]);
+          throw new Error(
+            errors?.error?.message || errors?.errors[0].msg || errors?.errors[0]
+          );
         }
         return res.json();
       })
