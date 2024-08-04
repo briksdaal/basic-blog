@@ -4,7 +4,12 @@ import UsersTable from '../components/Tables/UsersTable';
 function UsersView() {
   return (
     <div>
-      <FetchWrapper Child={UsersTable} suffixUrl={'/users'} title="Users" />
+      <FetchWrapper
+        Child={UsersTable}
+        suffixUrl={'/users'}
+        title="Users"
+        addNew={true}
+      />
     </div>
   );
 }

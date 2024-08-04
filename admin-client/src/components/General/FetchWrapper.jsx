@@ -4,10 +4,13 @@ import ErrorMessage from './ErrorMessage';
 import Loading from './Loading';
 import Breadcrumbs from './Breadcrumbs';
 import PageTitle from './PageTitle';
+import Typography from './Typography';
+import { Link } from 'react-router-dom';
+import { FaPlus } from 'react-icons/fa';
 import { getTitle } from '../../helpers/getTitle';
 import { Helmet } from 'react-helmet-async';
 
-function FetchWrapper({ Child, suffixUrl, trigger, title, ...props }) {
+function FetchWrapper({ Child, suffixUrl, trigger, title, addNew, ...props }) {
   const [data, loading, error] = useFetch(suffixUrl, getFetcher, trigger);
 
   if (!data && loading) {
@@ -36,7 +39,17 @@ function FetchWrapper({ Child, suffixUrl, trigger, title, ...props }) {
         </Helmet>
       )}
       <Breadcrumbs title={computedTitle.current} />
-      {title && <PageTitle>{title}</PageTitle>}
+      <div className="flex justify-between">
+        {title && <PageTitle>{title}</PageTitle>}
+        {addNew && (
+          <Typography type="smallTitle" className="flex gap-2">
+            Create New{' '}
+            <Link to={`${suffixUrl}/new`}>
+              <FaPlus className="mt-1 text-sky-800" />
+            </Link>
+          </Typography>
+        )}
+      </div>
       <Child {...props} data={data} />
     </>
   );

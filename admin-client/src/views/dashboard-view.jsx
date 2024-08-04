@@ -2,6 +2,8 @@ import useAuth from '../hooks/useAuth';
 import PageTitle from '../components/General/PageTitle';
 import Table from '../components/Tables/Table';
 import Breadcrumbs from '../components/General/Breadcrumbs';
+import { Link } from 'react-router-dom';
+import { FaPlus } from 'react-icons/fa';
 
 function DashboardView() {
   const { auth } = useAuth();
@@ -27,6 +29,18 @@ function DashboardView() {
               {
                 title: 'Type',
                 field: 'type'
+              },
+              {
+                title: '',
+                className: 'text-right',
+                field: 'new',
+                fn: (v) => (
+                  <Link
+                    to={`${v.link}/new`}
+                    className="flex justify-end text-sky-800">
+                    <FaPlus />
+                  </Link>
+                )
               }
             ]}
           />

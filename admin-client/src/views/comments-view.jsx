@@ -8,6 +8,7 @@ function CommentsView() {
         Child={CommentsTable}
         suffixUrl={'/comments'}
         title="Comments"
+        addNew={true}
       />
     </div>
   );
