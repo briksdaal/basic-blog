@@ -11,6 +11,9 @@ function Select({ id, label, options, validations, register, errorMsg }) {
           id={id}
           {...register(id, { ...validations })}
           className="flex-1 border-0 bg-transparent py-1.5 pl-3 text-gray-900 outline-none focus:ring-0 sm:leading-6">
+          <option value="" selected={true} disabled={true}>
+            -- Please choose an option --
+          </option>
           {options.map((o, i) => (
             <option key={o.value} value={o.value}>
               {o.text}
