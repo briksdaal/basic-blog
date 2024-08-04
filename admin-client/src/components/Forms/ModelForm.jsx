@@ -11,7 +11,8 @@ function ModelForm({
   existingValues,
   formAction,
   successMsg,
-  redirectPath = '/dashboard'
+  redirectPath = '/dashboard',
+  submitColor = 'green'
 }) {
   const { action, loading, errors: serverError, success } = formAction;
 
@@ -23,6 +24,12 @@ function ModelForm({
   } = useForm({ values: existingValues });
 
   const navigate = useNavigate();
+
+  const greenColors =
+    'bg-mantis-400 hover:bg-mantis-300 focus-visible:outline-mantis-400 disabled:bg-mantis-300';
+
+  const redColors =
+    'bg-red-500 hover:bg-red-300 focus-visible:outline-red-500 disabled:bg-red-300"';
 
   function onSubmit(data) {
     action(data);
@@ -41,7 +48,7 @@ function ModelForm({
     <div className="mx-auto">
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
         <div className="flex flex-col gap-2">
-          {formFields.map((ff) =>
+          {formFields?.map((ff) =>
             ff.type !== 'container' ? (
               <div key={ff.id}>
                 <GeneralInput
@@ -73,7 +80,7 @@ function ModelForm({
             <button
               type="submit"
               disabled={loading}
-              className="text-md rounded-md bg-mantis-400 px-6 py-2 font-bold text-white shadow-sm hover:bg-mantis-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-mantis-400 disabled:bg-mantis-300">
+              className={`text-md rounded-md px-6 py-2 font-bold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ${submitColor === 'green' ? greenColors : redColors}`}>
               {buttonText}
             </button>
             {loading && (
