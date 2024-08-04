@@ -38,7 +38,6 @@ function ModelForm({
   }
 
   useEffect(() => {
-    return;
     if (success) {
       setTimeout(() => {
         navigate(redirectPath);
