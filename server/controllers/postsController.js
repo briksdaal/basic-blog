@@ -98,19 +98,21 @@ export const post_create = [
       author: req.body.author,
       title: req.body.title,
       content: req.body.content,
-      createdAt: req.body.createdAt,
-      editedAt: req.body.editedAt,
+      createdAt: req.body.createdAt || undefined,
+      editedAt: req.body.editedAt || undefined,
       published: req.body.published,
       image: req.file?.path || null,
     });
 
-    try {
-      const gridObj = await addImageToGridFS(req.file);
-      post.gridfsImage = gridObj.id;
-    } catch (err) {
-      return res.status(500).json({
-        errors: [err],
-      });
+    if (req.file) {
+      try {
+        const gridObj = await addImageToGridFS(req.file);
+        post.gridfsImage = gridObj.id;
+      } catch (err) {
+        return res.status(500).json({
+          errors: [err],
+        });
+      }
     }
 
     await post.save();
