@@ -8,7 +8,7 @@ function Footer() {
         <a
           href="https://github.com/briksdaal"
           target="_blank"
-          rel="noreferrer"
+          rel="noopener noreferrer"
           className="text-lg">
           <FaGithub />
         </a>
