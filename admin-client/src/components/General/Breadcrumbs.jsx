@@ -26,6 +26,10 @@ function Breadcrumbs({ title }) {
               <Typography key={i} type="smaller">
                 {title}
               </Typography>
+            ) : c.staticTitle ? (
+              <Typography key={i} type="smaller">
+                {c.staticTitle}
+              </Typography>
             ) : (
               <Link key={i} to={c.link}>
                 <Typography type="smallerLink">{c.title}</Typography>

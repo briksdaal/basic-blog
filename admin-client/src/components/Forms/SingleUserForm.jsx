@@ -1,14 +1,14 @@
 import useFormAction from '../../hooks/useFormAction';
 import putFetcherMulti from '../../fetchers/putFetcherMulti';
+import postFetcherMulti from '../../fetchers/postFetcherMulti';
 import ModelForm from './ModelForm';
 import DeleteForm from './DeleteForm';
 import { ReferenceToOuterLink } from '../General/ReferenceToLink';
 
 function SingleUserForm({ data = { user: {} } }) {
-  const formAction = useFormAction(
-    `/users/${data?.user?._id}`,
-    putFetcherMulti
-  );
+  const formAction = data?.user?._id
+    ? useFormAction(`/users/${data?.user?._id}`, putFetcherMulti)
+    : useFormAction(`/users/`, postFetcherMulti);
 
   const { handle, firstname, lastname, imageUrl, admin } = data?.user;
 
@@ -39,14 +39,14 @@ function SingleUserForm({ data = { user: {} } }) {
         {
           type: 'text',
           id: 'firstname',
-          label: 'Firstname:',
-          validations: { required: 'Firstname must not be empty' }
+          label: 'First Name:',
+          validations: { required: 'First Name must not be empty' }
         },
         {
           type: 'text',
           id: 'lastname',
-          label: 'Lastname:',
-          validations: { required: 'Lastname must not be empty' }
+          label: 'Last Name:',
+          validations: { required: 'Last Name must not be empty' }
         }
       ]
     },
@@ -64,9 +64,38 @@ function SingleUserForm({ data = { user: {} } }) {
     }
   ];
 
+  if (!data?.user?._id) {
+    formFields.unshift(
+      {
+        type: 'email',
+        id: 'email',
+        label: 'Email:',
+        validations: { required: 'Last Name must not be empty' }
+      },
+      {
+        type: 'container',
+        id: 'container-2',
+        children: [
+          {
+            type: 'password',
+            id: 'password',
+            label: 'Password:',
+            validations: { required: 'Password must not be empty' }
+          },
+          {
+            type: 'password',
+            id: 'password-confirm',
+            label: 'Confirm Password:',
+            validations: { required: 'Confirm password must not be empty' }
+          }
+        ]
+      }
+    );
+  }
+
   return (
     <>
-      {data?.user && (
+      {data?.user?._id && (
         <ReferenceToOuterLink suffixUrl={`/authors/${data?.user?._id}`} />
       )}
       <ModelForm

@@ -8,6 +8,9 @@ import UsersPage from '../pages/users-page';
 import SinglePostPage from '../pages/single-post-page';
 import SingleCommentPage from '../pages/single-comment-page';
 import SingleUserPage from '../pages/single-user-page';
+import CreateUserPage from '../pages/create-user-page';
+import CreateCommentPage from '../pages/create-comment-page';
+import CreatePostPage from '../pages/create-post-page';
 import UnauthorizedPage from '../pages/unauthorized-page';
 import ProtectedAccess from '../components/AuthComps/ProtectedAccess';
 import PersistentLogin from '../components/AuthComps/PersistentLogin';
@@ -44,6 +47,11 @@ const routes = [
                     element: <PostsPage />
                   },
                   {
+                    path: 'new',
+                    element: <CreatePostPage />,
+                    handle: { crumb: { staticTitle: 'Create New Post' } }
+                  },
+                  {
                     path: ':id',
                     element: <SinglePostPage />,
                     handle: { crumb: { fetchTitle: true } }
@@ -57,6 +65,11 @@ const routes = [
                   {
                     index: true,
                     element: <CommentsPage />
+                  },
+                  {
+                    path: 'new',
+                    element: <CreateCommentPage />,
+                    handle: { crumb: { staticTitle: 'Create New Comment' } }
                   },
                   {
                     path: ':id',
@@ -73,6 +86,11 @@ const routes = [
                   {
                     index: true,
                     element: <UsersPage />
+                  },
+                  {
+                    path: 'new',
+                    element: <CreateUserPage />,
+                    handle: { crumb: { staticTitle: 'Create User Comment' } }
                   },
                   {
                     path: ':id',
