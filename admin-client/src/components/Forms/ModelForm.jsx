@@ -13,6 +13,7 @@ function ModelForm({
   formAction,
   successMsg,
   redirectPath = '/dashboard',
+  dropBeforeSend,
   submitColor = 'green',
   centered = false
 }) {
@@ -35,7 +36,27 @@ function ModelForm({
     'bg-red-500 hover:bg-red-300 focus-visible:outline-red-500 disabled:bg-red-300';
 
   function onSubmit(data) {
-    action(data);
+    const processedData = { ...data };
+
+    if (dropBeforeSend) {
+      if (
+        dropBeforeSend.email &&
+        processedData.email === dropBeforeSend.email
+      ) {
+        delete processedData.email;
+      }
+
+      if (
+        dropBeforeSend.password &&
+        processedData.password === '' &&
+        processedData['password-confirm'] === ''
+      ) {
+        delete processedData.password;
+        delete processedData['password-confirm'];
+      }
+    }
+
+    action(processedData);
   }
 
   useEffect(() => {

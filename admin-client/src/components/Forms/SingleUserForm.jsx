@@ -10,7 +10,7 @@ function SingleUserForm({ data = { user: {} } }) {
     ? useFormAction(`/users/${data?.user?._id}`, putFetcherMulti)
     : useFormAction(`/users/`, postFetcherMulti);
 
-  const { handle, firstname, lastname, imageUrl, admin } = data?.user;
+  const { email, handle, firstname, lastname, imageUrl, admin } = data?.user;
 
   const fullUrl = imageUrl && `${import.meta.env.VITE_API_URL}/${imageUrl}`;
 
@@ -26,6 +26,39 @@ function SingleUserForm({ data = { user: {} } }) {
   ];
 
   const formFields = [
+    {
+      type: 'email',
+      id: 'email',
+      label: 'Email:',
+      validations: { required: 'Last Name must not be empty' }
+    },
+    {
+      type: 'container',
+      id: 'container-2',
+      children: [
+        {
+          type: 'password',
+          id: 'password',
+          label: 'Password:',
+          validations: data?.user?._id
+            ? null
+            : { required: 'Password must not be empty' }
+        },
+        {
+          type: 'password',
+          id: 'password-confirm',
+          label: 'Confirm Password:',
+          validations: data?.user?._id
+            ? null
+            : { required: 'Confirm password must not be empty' },
+          validate: (watch) => (val) => {
+            if (watch('password') !== val) {
+              return "Passwords don't match";
+            }
+          }
+        }
+      ]
+    },
     {
       type: 'text',
       id: 'handle',
@@ -64,40 +97,6 @@ function SingleUserForm({ data = { user: {} } }) {
     }
   ];
 
-  if (!data?.user?._id) {
-    formFields.unshift(
-      {
-        type: 'email',
-        id: 'email',
-        label: 'Email:',
-        validations: { required: 'Last Name must not be empty' }
-      },
-      {
-        type: 'container',
-        id: 'container-2',
-        children: [
-          {
-            type: 'password',
-            id: 'password',
-            label: 'Password:',
-            validations: { required: 'Password must not be empty' }
-          },
-          {
-            type: 'password',
-            id: 'password-confirm',
-            label: 'Confirm Password:',
-            validations: { required: 'Confirm password must not be empty' },
-            validate: (watch) => (val) => {
-              if (watch('password') !== val) {
-                return "Passwords don't match";
-              }
-            }
-          }
-        ]
-      }
-    );
-  }
-
   return (
     <>
       {data?.user?._id && (
@@ -106,13 +105,19 @@ function SingleUserForm({ data = { user: {} } }) {
       <ModelForm
         buttonText="Update"
         formFields={formFields}
-        existingValues={{ handle, firstname, lastname, admin }}
+        existingValues={{ email, handle, firstname, lastname, admin }}
         defaultValues={{
           admin: ''
         }}
         formAction={formAction}
         successMsg="Successfully updated! You're being redirected to main users page..."
         redirectPath="/users"
+        dropBeforeSend={
+          data?.user?._id && {
+            email: email,
+            password: true
+          }
+        }
       />
       {data?.user?._id && (
         <DeleteForm

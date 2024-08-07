@@ -156,6 +156,18 @@ export const update_user_put = [
   passport.authenticate('jwt', { session: false }),
   verifyUser,
   imageUploadAndValidation,
+  body('email')
+    .optional()
+    .trim()
+    .isEmail()
+    .withMessage('Email format incorrect')
+    .custom(async (val) => {
+      const userExists = await User.findOne({ email: val }).exec();
+      if (userExists) {
+        throw new Error('User with email already exists');
+      }
+    })
+    .escape(),
   body('firstname', 'Firstname must not be empty')
     .optional()
     .trim()
@@ -213,12 +225,7 @@ export const update_user_put = [
     }
 
     Object.keys(req.body).forEach((e) => {
-      if (
-        e === 'email' ||
-        e === 'image' ||
-        e === 'password' ||
-        e === 'password-confirm'
-      ) {
+      if (e === 'image' || e === 'password' || e === 'password-confirm') {
         return;
       }
       user[e] = req.body[e];
