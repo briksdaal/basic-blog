@@ -80,7 +80,6 @@ const routes = [
               },
               {
                 path: '/users',
-                element: <ProtectedAccess adminOnly={true} />,
                 handle: { crumb: { title: 'Users' } },
                 children: [
                   {
@@ -89,13 +88,27 @@ const routes = [
                   },
                   {
                     path: 'new',
-                    element: <CreateUserPage />,
-                    handle: { crumb: { staticTitle: 'Create User Comment' } }
+                    element: <ProtectedAccess adminOnly={true} />,
+                    children: [
+                      {
+                        index: true,
+                        element: <CreateUserPage />,
+                        handle: {
+                          crumb: { staticTitle: 'Create User Comment' }
+                        }
+                      }
+                    ]
                   },
                   {
                     path: ':id',
-                    element: <SingleUserPage />,
-                    handle: { crumb: { fetchTitle: true } }
+                    element: <ProtectedAccess adminOnly={true} />,
+                    children: [
+                      {
+                        index: true,
+                        element: <SingleUserPage />,
+                        handle: { crumb: { fetchTitle: true } }
+                      }
+                    ]
                   }
                 ]
               },

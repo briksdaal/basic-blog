@@ -1,6 +1,7 @@
 import SingleUserForm from '../components/Forms/SingleUserForm';
 import PageTitle from '../components/General/PageTitle';
 import Breadcrumbs from '../components/General/Breadcrumbs';
+import { useParams } from 'react-router-dom';
 
 function CreateUserView() {
   return (

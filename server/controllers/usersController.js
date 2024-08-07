@@ -35,9 +35,15 @@ function verifyAdmin(req, res, next) {
 export const user_list = [
   passport.authenticate('jwt', { session: false }),
   asyncHandler(async function (req, res) {
-    const allUsers = await User.find({}, { password: 0 })
-      .sort({ firstname: 1 })
-      .exec();
+    let allUsers;
+
+    if (!req.user.admin) {
+      allUsers = [await User.findById(req.user._id, { password: 0 }).exec()];
+    } else {
+      allUsers = await User.find({}, { password: 0 })
+        .sort({ firstname: 1 })
+        .exec();
+    }
 
     res.json({
       success: true,
