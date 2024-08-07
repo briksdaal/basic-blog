@@ -21,7 +21,8 @@ function useRefresh() {
             ...auth,
             user: data.user,
             token: data.token,
-            admin: data.admin
+            admin: data.admin,
+            id: data.id
           };
         });
         return data.token;

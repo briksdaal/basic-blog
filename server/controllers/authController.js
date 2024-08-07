@@ -43,8 +43,16 @@ export const login_user_post = [
         .json({ errors: [{ msg: 'Invalid username or password' }] });
     }
 
-    const refreshToken = createRefreshToken(email, foundUser.admin);
-    const accessToken = createAccessToken(email, foundUser.admin);
+    const refreshToken = createRefreshToken(
+      email,
+      foundUser.admin,
+      foundUser._id
+    );
+    const accessToken = createAccessToken(
+      email,
+      foundUser.admin,
+      foundUser._id
+    );
 
     let expiry = new Date();
     expiry.setDate(expiry.getDate() + 1);
@@ -77,6 +85,7 @@ export const login_user_post = [
       message: `User ${email} logged in`,
       token: accessToken,
       admin: foundUser.admin,
+      id: foundUser.id,
     });
   }),
 ];

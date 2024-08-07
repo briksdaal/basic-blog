@@ -31,7 +31,8 @@ function useLogin() {
           setAuth({
             user: formData.email,
             token: data.token,
-            admin: data.admin
+            admin: data.admin,
+            id: data.id
           });
         }, 1000);
       })
