@@ -22,7 +22,8 @@ function ModelForm({
     register,
     handleSubmit,
     formState: { errors },
-    setValue
+    setValue,
+    watch
   } = useForm({ values: existingValues, defaultValues: defaultValues });
 
   const navigate = useNavigate();
@@ -51,11 +52,28 @@ function ModelForm({
     };
   }, [success]);
 
+  function populateWithWatch(fields) {
+    return fields?.map((f) => {
+      if (f.type === 'container') {
+        return { ...f, children: populateWithWatch(f.children) };
+      }
+      if (f.validate) {
+        return {
+          ...f,
+          validations: { ...f.validations, validate: f.validate(watch) }
+        };
+      }
+      return f;
+    });
+  }
+
+  const populatedFormFields = populateWithWatch(formFields);
+
   return (
     <div className="mx-auto">
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
         <div className="flex flex-col gap-2">
-          {formFields?.map((ff) =>
+          {populatedFormFields?.map((ff) =>
             ff.type !== 'container' ? (
               <div key={ff.id}>
                 <GeneralInput
@@ -75,6 +93,7 @@ function ModelForm({
                       {...ffi}
                       register={register}
                       errorMsg={errors[ffi.id]?.message}
+                      setValue={setValue}
                     />
                   </div>
                 ))}

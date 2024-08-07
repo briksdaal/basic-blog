@@ -86,7 +86,12 @@ function SingleUserForm({ data = { user: {} } }) {
             type: 'password',
             id: 'password-confirm',
             label: 'Confirm Password:',
-            validations: { required: 'Confirm password must not be empty' }
+            validations: { required: 'Confirm password must not be empty' },
+            validate: (watch) => (val) => {
+              if (watch('password') !== val) {
+                return "Passwords don't match";
+              }
+            }
           }
         ]
       }
